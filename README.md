@@ -1,6 +1,6 @@
 # 📋 Divisão de Tarefas por Integrante para o Projeto
 
-## 💻 **Integrante 1: Backend & Banco de Dados**
+## 💻 **Integrante 1: Backend & Banco de Dados:**
 
 ### 🧠 Semana 19/05 a 09/06):
 **Tecnologias:**
