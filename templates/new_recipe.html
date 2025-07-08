@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Receita</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Adicionar Receita</h1>
+    <form method="POST">
+        <label>Título:</label>
+        <input type="text" name="titulo" required>
+
+        <label>Descrição:</label>
+        <textarea name="descricao"></textarea>
+
+        <label>Modo de Preparo:</label>
+        <textarea name="modo_preparo"></textarea>
+
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

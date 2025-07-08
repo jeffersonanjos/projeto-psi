@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receitas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Receitas</h1>
+    <a href="{{ url_for('nova_receita') }}">➕ Nova Receita</a>
+    <ul>
+        {% for r in receitas %}
+            <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
