@@ -1,31 +1,238 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f4f4f4;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-color: #f8f8f8;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
-h1 {
-    color: #333;
+.container {
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+h1, h2, h3 {
+    color: #e67e22;
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 700;
 }
 
 a {
-    color: #007BFF;
+    color: #27ae60;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-form input, form textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+a:hover {
+    color: #2ecc71;
 }
 
-button {
-    padding: 8px 16px;
-    background-color: #007BFF;
+button, .button-link {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #e67e22;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+}
+
+button:hover, .button-link:hover {
+    background-color: #d35400;
+    transform: translateY(-2px);
+}
+
+button:active, .button-link:active {
+    transform: translateY(0);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+    border-color: #e67e22;
+    outline: none;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+ul li {
+    background-color: #fefefe;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    padding: 15px 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ul li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+ul li a {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #34495e;
+    flex-grow: 1;
+}
+
+.recipe-detail p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #444;
+}
+
+.recipe-detail strong {
+    color: #e67e22;
+}
+
+/* Estilo para o botão "Adicionar Nova Receita" */
+.add-recipe-button {
+    display: block;
+    width: fit-content;
+    margin: 20px auto 30px auto;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    background-color: #27ae60;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}
+
+.add-recipe-button:hover {
+    background-color: #2ecc71;
+}
+
+/* Estilo aprimorado para o botão "Voltar" */
+.back-button {
+    display: inline-flex; /* Usar flexbox para alinhar ícone e texto */
+    align-items: center;
+    gap: 8px; /* Espaçamento entre o ícone e o texto */
+    margin-top: 25px;
+    background-color: #3498db; /* Um tom de azul mais vibrante */
+    color: white;
+    border: none;
+    border-radius: 25px; /* Cantos mais arredondados para um visual de pílula */
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* Sombra azul */
+}
+
+.back-button:hover {
+    background-color: #2980b9; /* Azul mais escuro ao passar o mouse */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+}
+
+.back-button:active {
+    transform: translateY(0);
+}
+
+/* Estilo para as seções de descrição e modo de preparo enquadradas */
+.recipe-section-box {
+    background-color: #fefefe; /* Fundo levemente diferente para o quadro */
+    border: 1px solid #e0e0e0; /* Borda suave */
+    border-radius: 10px; /* Cantos arredondados */
+    padding: 20px;
+    margin-bottom: 20px; /* Espaçamento entre os quadros */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+.recipe-section-box strong {
+    display: block; /* Garante que o título esteja em sua própria linha */
+    margin-bottom: 10px; /* Espaçamento abaixo do título */
+    font-size: 1.2em;
+    color: #e67e22; /* Cor de destaque para o título da seção */
+}
+
+/* Responsividade básica */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    button, .button-link, .add-recipe-button, .back-button {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+
+    ul li {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 15px;
+    }
+
+    ul li a {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+    }
+
+    .recipe-section-box {
+        padding: 15px;
+    }
 }

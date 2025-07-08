@@ -2,12 +2,33 @@
 <html>
 <head>
     <title>{{ receita.titulo }}</title>
+    <!-- Link para o arquivo CSS de estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Link para a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Meta tag para garantir a responsividade em diferentes dispositivos -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>{{ receita.titulo }}</h1>
-    <p><strong>Descrição:</strong> {{ receita.descricao }}</p>
-    <p><strong>Modo de Preparo:</strong> {{ receita.modo_preparo }}</p>
-    <a href="{{ url_for('index') }}">← Voltar</a>
+    <!-- Container principal para os detalhes da receita -->
+    <div class="container recipe-detail">
+        <!-- Título da receita, dinamicamente preenchido pelo Flask -->
+        <h1>{{ receita.titulo }}</h1>
+
+        <!-- Seção de Descrição, enquadrada em uma caixa -->
+        <div class="recipe-section-box">
+            <strong>Descrição:</strong>
+            <p>{{ receita.descricao }}</p>
+        </div>
+
+        <!-- Seção de Modo de Preparo, enquadrada em uma caixa -->
+        <div class="recipe-section-box">
+            <strong>Modo de Preparo:</strong>
+            <p>{{ receita.modo_preparo }}</p>
+        </div>
+
+        <!-- Botão para voltar para a lista de receitas, com ícone de seta -->
+        <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
+    </div>
 </body>
 </html>

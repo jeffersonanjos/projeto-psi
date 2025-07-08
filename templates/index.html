@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Receitas</title>
+    <title>Receitas Deliciosas</title>
+    <!-- Link para o arquivo CSS de estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Link para a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Meta tag para garantir a responsividade em diferentes dispositivos -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Receitas</h1>
-    <a href="{{ url_for('nova_receita') }}">➕ Nova Receita</a>
-    <ul>
-        {% for r in receitas %}
-            <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
-        {% endfor %}
-    </ul>
+    <!-- Container principal para o conteúdo da página, aplicando estilos de layout -->
+    <div class="container">
+        <!-- Título principal da página -->
+        <h1>Receitas Deliciosas</h1>
+        <!-- Botão para adicionar uma nova receita -->
+        <!-- O JavaScript é usado para redirecionar o usuário ao clicar no botão -->
+        <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button">Adicionar Nova Receita</button>
+        <!-- Lista de receitas -->
+        <ul>
+            <!-- Loop para exibir cada receita na lista -->
+            {% for r in receitas %}
+                <!-- Item da lista que contém um link para os detalhes da receita -->
+                <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
