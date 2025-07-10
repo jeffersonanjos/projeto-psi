@@ -1,72 +1,45 @@
-# Divisão de Tarefas por Integrante para o Projeto
+# 📅 Cronograma e Requisitos do Projeto
 
-## **Integrante 1: Backend & Banco de Dados:**
-**Tecnologias:**
-```sh
-Python
-Flask
-```
-1. Modelagem do Banco de Dados (Semana 19/05 a 09/06):
-  - Usar SQLAlchemy para criar modelos: User, Recipe, Ingredient, Comment,
-  Favorite.
-  - Escolher SGBD (SQLite para desenvolvimento, PostgreSQL/MariaDB para
-  produção).
-  - Criar migrations com Flask-Migrate (ou Alembic).
+## ✅ Etapas do Projeto e Responsáveis
 
-### 2. **Implementar login/registro com Flask-Login ou JWT (para API)**
-  - Implementar login/registro com Flask-Login ou JWT (para API).
-  - Roles (usuário comum/admin) com decorators (ex: @admin_required)
+| Tarefa                                                                                   | Responsável         | Status        | Início       | Término      | Observações        |
+|------------------------------------------------------------------------------------------|---------------------|---------------|--------------|--------------|--------------------|
+| Definir grupo e temática / Criação do projeto no GitHub                                  | Todos               | Feita         | 05/05/2025   | 09/05/2025   |                    |
+| Definir layout da aplicação                                                              | Integrante 1        | Feita         | 12/05/2025   | 12/06/2025   |                    |
+| Modelagem do banco de dados                                                              | Integrante 1        | Feita         | 19/05/2025   | 09/06/2025   | SQLAlchemy         |
+| Implementação de rotas (parte delas). Testar layout e testar operações com banco de dados| Integrante 1        | Feita         | 12/06/2025   | 12/07/2025   | Blueprints / Fetch |
+| Implementação de autenticação de usuário (registro/login)                                | Integrante 1        | Não iniciada  | 14/07/2025   | 11/08/2025   | Flask-Login / JWT  |
+| Implementação de regras de negócio da aplicação (autorização)                            | Integrante 1        | Não iniciada  | 09/09/2025   | 06/10/2025   |                    |
+| Implementação de operações da aplicação (requisitos funcionais)                          | Integrante 1        | Não iniciada  | 06/10/2025   | 07/11/2025   | Favoritar receitas |
+| Envio de e-mails (definir e implementar)                                                 | Integrante 3        | Não iniciada  | 07/11/2025   | 08/12/2025   | Flask-Mail         |
+| Implementar notificações (e-mail e web)                                                  | Integrante 3        | Não iniciada  | 07/11/2025   | 08/12/2025   | SweetAlert2        |
+| Gerar relatórios da aplicação                                                            | Integrante 3        | Não iniciada  | 24/11/2025   | 08/12/2025   | PDF (WeasyPrint)   |
+| Ajustes finais do projeto                                                                | Todos               | Não iniciada  | 01/12/2025   | 15/12/2025   |                    |
+| Apresentação final                                                                       | Todos               | Não iniciada  | 17/12/2025   | 17/12/2025   | Slides e demo      |
 
-### 3. **Regras de Negócio:**
-  - Lógica para favoritar receitas (many-to-many entre User e Recipe).
-  - Restrições (ex: só o autor pode editar receita).
+---
 
-### **4. API/Rotas Básicas:**
-  - Criar endpoints com **Flask-RESTful ou Blueprints:**
-    - GET /recipes?ingredient=tomate (busca).
-    - POST /recipes (criar receita).
+## 📌 Observações Importantes
 
+- O projeto está sendo desenvolvido em Python com Flask para o backend.
+- Banco de dados será modelado com SQLAlchemy e migrations usando Flask-Migrate.
+- Interface será feita com Jinja2 e Bootstrap ou Tailwind CSS.
+- O sistema incluirá autenticação, autorização, notificações, envio de e-mails e geração de relatórios.
 
-# Integrante 2: Frontend & UI/UX
+---
 
-### Layout
-**Tecnologias:**
-```sh
-Jinja2 + Bootstrap/Tailwind CSS
-```
+## 📎 Tecnologias Envolvidas
 
-### **1. Layout da Aplicação:**
-  - Usar **Jinja2** para templates + **Bootstrap** ou **Tailwind CSS**.
-  - Páginas essenciais:
-  - index.html (lista de receitas).
-    - recipe_detail.html (detalhes + comentários).
-    - profile.html (perfil do usuário)
-  - Criar páginas: Home, Perfil, Detalhes da Receita.
-    
-### **2. Integração Front-Back**
-  - Consumir dados das rotas do Flask nos templates Jinja2.
-  - Busca por ingredientes (JavaScript fetch + endpoint /**recipes?ingredient=...**).
-    
-### **3. Notificações na UI:**
-  - Alertas com SweetAlert2 ou Flask-Flash.
-  - Integrar com sistema de e-mails (trabalho com Integrante 3).
+- **Backend:** Python, Flask, Flask-RESTful, Flask-Login/JWT, Flask-Mail
+- **Banco de Dados:** SQLAlchemy, SQLite (dev), PostgreSQL/MariaDB (produção)
+- **Frontend:** Jinja2, Bootstrap/Tailwind, JavaScript
+- **Relatórios e E-mail:** WeasyPrint / ReportLab, Flask-Mail, SweetAlert2
 
+---
 
-# 💻 Integrante 3: Funcionalidades Avançadas & Relatórios
+## 🧑‍💻 Equipe e Papéis
 
-### **1. Envio de E-mails:**
-```sh
-  - Usar Flask-Mail ou SendGrid API para:
-    - Notificar novos comentários.
-    - Confirmação de registro.
+- **Integrante 1 (Backend & Banco de Dados)**
+- **Integrante 2 (Frontend & UI/UX)**
+- **Integrante 3 (Funcionalidades Avançadas & Relatórios)**
 
-```
-
-### **2. Gerar PDFs:**
-
-  - Usar ReportLab ou WeasyPrint para gerar lista de compras em PDF.
-
-### 3. Deploy Básico:
-- Subir aplicação no Render, Heroku ou PythonAnywhere.
-
-*Apresentação (17/12):* *Preparar slides e demonstração*
