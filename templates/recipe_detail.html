@@ -2,26 +2,19 @@
 <html>
 <head>
     <title>{{ receita.titulo }}</title>
-    <!-- Link para o arquivo CSS de estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Link para a fonte Inter do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Meta tag para garantir a responsividade em diferentes dispositivos -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <!-- Container principal para os detalhes da receita -->
     <div class="container recipe-detail">
-        <!-- Título da receita, dinamicamente preenchido pelo Flask -->
         <h1>{{ receita.titulo }}</h1>
 
-        <!-- Seção de Descrição, enquadrada em uma caixa -->
         <div class="recipe-section-box">
             <strong>Descrição:</strong>
             <p>{{ receita.descricao }}</p>
         </div>
 
-        <!-- Seção de Modo de Preparo, enquadrada em uma caixa -->
         <div class="recipe-section-box">
             <strong>Modo de Preparo:</strong>
             <p>{{ receita.modo_preparo }}</p>
@@ -29,21 +22,21 @@
 
         <!-- Botões de ação -->
         <div class="recipe-actions">
-            <!-- Botão para editar a receita - abre o modal de confirmação -->
-            <button type="button" class="button-link edit-button" onclick="showConfirmationModal('edit');">Editar</button>
-            <!-- Botão para excluir a receita - abre o modal de confirmação -->
-            <button type="button" class="button-link delete-button" onclick="showConfirmationModal('delete');">Excluir</button>
+            <!-- Botão Editar redireciona diretamente -->
+            <a href="{{ url_for('editar_receita', id=receita.id) }}" class="button-link edit-button">Editar</a>
+
+            <!-- Botão Excluir abre o modal de confirmação -->
+            <button type="button" class="button-link delete-button" onclick="showConfirmationModal();">Excluir</button>
         </div>
 
-        <!-- Botão para voltar para a lista de receitas, com ícone de seta -->
         <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
     </div>
 
-    <!-- Modal de Confirmação -->
+    <!-- Modal de Confirmação de Exclusão -->
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="hideConfirmationModal()">&times;</span>
-            <p id="modalMessage"></p>
+            <p id="modalMessage">Tem certeza que deseja excluir esta receita? Esta ação é irreversível.</p>
             <div class="modal-buttons">
                 <button id="confirmActionButton" class="button-link confirm-button">Confirmar</button>
                 <button type="button" class="button-link cancel-button" onclick="hideConfirmationModal()">Cancelar</button>
@@ -52,45 +45,30 @@
     </div>
 
     <script>
-        let currentAction = ''; // Variável para armazenar a ação atual (edit ou delete)
-
-        function showConfirmationModal(action) {
-            currentAction = action;
+        function showConfirmationModal() {
             const modal = document.getElementById('confirmationModal');
-            const modalMessage = document.getElementById('modalMessage');
             const confirmButton = document.getElementById('confirmActionButton');
 
-            if (action === 'edit') {
-                modalMessage.textContent = 'Tem certeza que deseja editar esta receita?';
-                confirmButton.onclick = function() {
-                    window.location.href = "{{ url_for('editar_receita', id=receita.id) }}";
-                };
-            } else if (action === 'delete') {
-                modalMessage.textContent = 'Tem certeza que deseja excluir esta receita? Esta ação é irreversível.';
-                confirmButton.onclick = function() {
-                    document.getElementById('deleteForm').submit(); // Submete o formulário de exclusão
-                };
-            }
-            modal.style.display = 'block';
+            confirmButton.onclick = function() {
+                document.getElementById('deleteForm').submit();
+            };
+
+            modal.style.display = 'flex';
         }
 
         function hideConfirmationModal() {
             document.getElementById('confirmationModal').style.display = 'none';
         }
 
-        // Adiciona um formulário oculto para a exclusão via POST
-        // Isso é necessário porque o botão de exclusão agora abre um modal,
-        // e o formulário precisa ser submetido via JavaScript.
-        document.addEventListener('DOMContentLoaded', (event) => {
+        document.addEventListener('DOMContentLoaded', () => {
             const deleteForm = document.createElement('form');
             deleteForm.setAttribute('id', 'deleteForm');
             deleteForm.setAttribute('action', "{{ url_for('excluir_receita', id=receita.id) }}");
             deleteForm.setAttribute('method', 'POST');
-            deleteForm.style.display = 'none'; // Esconde o formulário
+            deleteForm.style.display = 'none';
             document.body.appendChild(deleteForm);
         });
 
-        // Fecha o modal se o usuário clicar fora dele
         window.onclick = function(event) {
             const modal = document.getElementById('confirmationModal');
             if (event.target == modal) {

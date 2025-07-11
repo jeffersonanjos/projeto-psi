@@ -5,72 +5,72 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-color: #f8f8f8; /* Cor de fundo suave */
-    color: #333; /* Cor de texto principal */
+    background-color: #f8f8f8;
+    color: #333;
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* Garante que o corpo ocupe a altura total da viewport */
+    min-height: 100vh;
 }
 
 .container {
     width: 90%;
     max-width: 800px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
-    border-radius: 12px; /* Cantos arredondados */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
 h1, h2, h3 {
-    color: #e67e22; /* Cor de destaque para títulos */
+    color: #e67e22;
     text-align: center;
     margin-bottom: 25px;
-    font-weight: 700; /* Negrito para títulos */
+    font-weight: 700;
 }
 
 a {
-    color: #27ae60; /* Cor de link padrão */
+    color: #27ae60;
     text-decoration: none;
-    transition: color 0.3s ease; /* Transição suave para a cor do link */
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #2ecc71; /* Cor de link ao passar o mouse */
+    color: #2ecc71;
 }
 
 button, .button-link {
     display: inline-block;
     padding: 12px 25px;
-    background-color: #e67e22; /* Cor de fundo padrão para botões */
+    background-color: #e67e22;
     color: white;
     border: none;
-    border-radius: 8px; /* Cantos arredondados */
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
-    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); /* Sombra para botões */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
 }
 
 button:hover, .button-link:hover {
-    background-color: #d35400; /* Cor de fundo ao passar o mouse */
-    transform: translateY(-2px); /* Efeito de "levantar" */
+    background-color: #d35400;
+    transform: translateY(-2px);
 }
 
 button:active, .button-link:active {
-    transform: translateY(0); /* Retorna à posição original ao clicar */
+    transform: translateY(0);
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaçamento entre os elementos do formulário */
+    gap: 15px;
 }
 
 form label {
@@ -81,24 +81,24 @@ form label {
 
 form input[type="text"],
 form textarea {
-    width: calc(100% - 20px); /* Largura total menos o padding */
+    width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06); /* Sombra interna para inputs */
-    transition: border-color 0.3s ease; /* Transição suave para a borda */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: border-color 0.3s ease;
 }
 
 form input[type="text"]:focus,
 form textarea:focus {
-    border-color: #e67e22; /* Cor da borda ao focar */
-    outline: none; /* Remove o contorno padrão */
+    border-color: #e67e22;
+    outline: none;
 }
 
 form textarea {
-    resize: vertical; /* Permite redimensionar verticalmente */
+    resize: vertical;
     min-height: 120px;
 }
 
@@ -142,41 +142,39 @@ ul li a {
     color: #e67e22;
 }
 
-/* Estilo para o botão "Adicionar Nova Receita" */
 .add-recipe-button {
     display: block;
     width: fit-content;
     margin: 20px auto 30px auto;
     padding: 12px 30px;
     font-size: 1.1em;
-    background-color: #27ae60; /* Verde */
+    background-color: #27ae60;
     box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
 }
 
 .add-recipe-button:hover {
-    background-color: #2ecc71; /* Verde mais claro ao passar o mouse */
+    background-color: #2ecc71;
 }
 
-/* Estilo aprimorado para o botão "Voltar" */
 .back-button {
-    display: inline-flex; /* Usar flexbox para alinhar ícone e texto */
+    display: inline-flex;
     align-items: center;
-    gap: 8px; /* Espaçamento entre o ícone e o texto */
+    gap: 8px;
     margin-top: 25px;
-    background-color: #3498db; /* Um tom de azul mais vibrante */
+    background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 25px; /* Cantos mais arredondados para um visual de pílula */
+    border-radius: 25px;
     padding: 10px 20px;
     font-size: 1em;
     font-weight: bold;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); /* Sombra azul */
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
 }
 
 .back-button:hover {
-    background-color: #2980b9; /* Azul mais escuro ao passar o mouse */
+    background-color: #2980b9;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
 }
@@ -185,53 +183,50 @@ ul li a {
     transform: translateY(0);
 }
 
-/* Estilo para as seções de descrição e modo de preparo enquadradas */
 .recipe-section-box {
-    background-color: #fefefe; /* Fundo levemente diferente para o quadro */
-    border: 1px solid #e0e0e0; /* Borda suave */
-    border-radius: 10px; /* Cantos arredondados */
+    background-color: #fefefe;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
     padding: 20px;
-    margin-bottom: 20px; /* Espaçamento entre os quadros */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .recipe-section-box strong {
-    display: block; /* Garante que o título esteja em sua própria linha */
-    margin-bottom: 10px; /* Espaçamento abaixo do título */
+    display: block;
+    margin-bottom: 10px;
     font-size: 1.2em;
-    color: #e67e22; /* Cor de destaque para o título da seção */
+    color: #e67e22;
 }
 
-/* Estilos para os botões de ação (Editar e Excluir) */
 .recipe-actions {
     display: flex;
-    justify-content: center; /* Centraliza os botões */
+    justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
-    gap: 15px; /* Espaçamento entre os botões */
+    gap: 15px;
 }
 
 .edit-button {
-    background-color: #007bff; /* Azul para editar */
+    background-color: #007bff;
     color: white;
 }
 
 .edit-button:hover {
-    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    background-color: #0056b3;
 }
 
 .delete-button {
-    background-color: #dc3545; /* Vermelho para excluir */
+    background-color: #dc3545;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 .delete-button:hover {
-    background-color: #c82333; /* Vermelho mais escuro ao passar o mouse */
+    background-color: #c82333;
 }
 
-/* Responsividade básica */
 @media (max-width: 600px) {
     .container {
         width: 95%;
@@ -266,30 +261,29 @@ ul li a {
     }
 
     .recipe-actions {
-        flex-direction: column; /* Empilha os botões em telas pequenas */
+        flex-direction: column;
         gap: 10px;
     }
 
     .recipe-actions .button-link,
     .recipe-actions button {
-        width: 100%; /* Botões ocupam a largura total */
+        width: 100%;
     }
 }
 
-/* Estilos para o Modal de Confirmação */
+/* CORRIGIDO: Estilos para o Modal de Confirmação */
 .modal {
-    display: none; /* Escondido por padrão */
-    position: fixed; /* Fica no topo da página */
-    z-index: 1; /* Acima de tudo */
+    display: none; /* Corrigido: agora o modal começa invisível */
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Largura total */
-    height: 100%; /* Altura total */
-    overflow: auto; /* Habilita scroll se necessário */
-    background-color: rgba(0,0,0,0.4); /* Fundo escurecido */
-    display: flex; /* Usar flexbox para centralizar */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
@@ -297,8 +291,8 @@ ul li a {
     margin: auto;
     padding: 30px;
     border: 1px solid #888;
-    width: 80%; /* Largura do modal */
-    max-width: 500px; /* Largura máxima */
+    width: 80%;
+    max-width: 500px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     position: relative;
@@ -336,7 +330,7 @@ ul li a {
 }
 
 .confirm-button {
-    background-color: #28a745; /* Verde para confirmar */
+    background-color: #28a745;
 }
 
 .confirm-button:hover {
@@ -344,7 +338,7 @@ ul li a {
 }
 
 .cancel-button {
-    background-color: #6c757d; /* Cinza para cancelar */
+    background-color: #6c757d;
 }
 
 .cancel-button:hover {
