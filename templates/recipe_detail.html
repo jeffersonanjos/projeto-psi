@@ -27,8 +27,76 @@
             <p>{{ receita.modo_preparo }}</p>
         </div>
 
+        <!-- Botões de ação -->
+        <div class="recipe-actions">
+            <!-- Botão para editar a receita - abre o modal de confirmação -->
+            <button type="button" class="button-link edit-button" onclick="showConfirmationModal('edit');">Editar</button>
+            <!-- Botão para excluir a receita - abre o modal de confirmação -->
+            <button type="button" class="button-link delete-button" onclick="showConfirmationModal('delete');">Excluir</button>
+        </div>
+
         <!-- Botão para voltar para a lista de receitas, com ícone de seta -->
         <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
     </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="hideConfirmationModal()">&times;</span>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button id="confirmActionButton" class="button-link confirm-button">Confirmar</button>
+                <button type="button" class="button-link cancel-button" onclick="hideConfirmationModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAction = ''; // Variável para armazenar a ação atual (edit ou delete)
+
+        function showConfirmationModal(action) {
+            currentAction = action;
+            const modal = document.getElementById('confirmationModal');
+            const modalMessage = document.getElementById('modalMessage');
+            const confirmButton = document.getElementById('confirmActionButton');
+
+            if (action === 'edit') {
+                modalMessage.textContent = 'Tem certeza que deseja editar esta receita?';
+                confirmButton.onclick = function() {
+                    window.location.href = "{{ url_for('editar_receita', id=receita.id) }}";
+                };
+            } else if (action === 'delete') {
+                modalMessage.textContent = 'Tem certeza que deseja excluir esta receita? Esta ação é irreversível.';
+                confirmButton.onclick = function() {
+                    document.getElementById('deleteForm').submit(); // Submete o formulário de exclusão
+                };
+            }
+            modal.style.display = 'block';
+        }
+
+        function hideConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+
+        // Adiciona um formulário oculto para a exclusão via POST
+        // Isso é necessário porque o botão de exclusão agora abre um modal,
+        // e o formulário precisa ser submetido via JavaScript.
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const deleteForm = document.createElement('form');
+            deleteForm.setAttribute('id', 'deleteForm');
+            deleteForm.setAttribute('action', "{{ url_for('excluir_receita', id=receita.id) }}");
+            deleteForm.setAttribute('method', 'POST');
+            deleteForm.style.display = 'none'; // Esconde o formulário
+            document.body.appendChild(deleteForm);
+        });
+
+        // Fecha o modal se o usuário clicar fora dele
+        window.onclick = function(event) {
+            const modal = document.getElementById('confirmationModal');
+            if (event.target == modal) {
+                hideConfirmationModal();
+            }
+        }
+    </script>
 </body>
 </html>

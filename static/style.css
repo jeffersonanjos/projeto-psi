@@ -5,72 +5,72 @@ body {
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-color: #f8f8f8;
-    color: #333;
+    background-color: #f8f8f8; /* Cor de fundo suave */
+    color: #333; /* Cor de texto principal */
     line-height: 1.6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* Garante que o corpo ocupe a altura total da viewport */
 }
 
 .container {
     width: 90%;
     max-width: 800px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background-color: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
+    border-radius: 12px; /* Cantos arredondados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Sombra sutil */
     margin-top: 30px;
     margin-bottom: 30px;
 }
 
 h1, h2, h3 {
-    color: #e67e22;
+    color: #e67e22; /* Cor de destaque para títulos */
     text-align: center;
     margin-bottom: 25px;
-    font-weight: 700;
+    font-weight: 700; /* Negrito para títulos */
 }
 
 a {
-    color: #27ae60;
+    color: #27ae60; /* Cor de link padrão */
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease; /* Transição suave para a cor do link */
 }
 
 a:hover {
-    color: #2ecc71;
+    color: #2ecc71; /* Cor de link ao passar o mouse */
 }
 
 button, .button-link {
     display: inline-block;
     padding: 12px 25px;
-    background-color: #e67e22;
+    background-color: #e67e22; /* Cor de fundo padrão para botões */
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 8px; /* Cantos arredondados */
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+    box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); /* Sombra para botões */
 }
 
 button:hover, .button-link:hover {
-    background-color: #d35400;
-    transform: translateY(-2px);
+    background-color: #d35400; /* Cor de fundo ao passar o mouse */
+    transform: translateY(-2px); /* Efeito de "levantar" */
 }
 
 button:active, .button-link:active {
-    transform: translateY(0);
+    transform: translateY(0); /* Retorna à posição original ao clicar */
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 15px; /* Espaçamento entre os elementos do formulário */
 }
 
 form label {
@@ -81,24 +81,24 @@ form label {
 
 form input[type="text"],
 form textarea {
-    width: calc(100% - 20px);
+    width: calc(100% - 20px); /* Largura total menos o padding */
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: border-color 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06); /* Sombra interna para inputs */
+    transition: border-color 0.3s ease; /* Transição suave para a borda */
 }
 
 form input[type="text"]:focus,
 form textarea:focus {
-    border-color: #e67e22;
-    outline: none;
+    border-color: #e67e22; /* Cor da borda ao focar */
+    outline: none; /* Remove o contorno padrão */
 }
 
 form textarea {
-    resize: vertical;
+    resize: vertical; /* Permite redimensionar verticalmente */
     min-height: 120px;
 }
 
@@ -149,12 +149,12 @@ ul li a {
     margin: 20px auto 30px auto;
     padding: 12px 30px;
     font-size: 1.1em;
-    background-color: #27ae60;
+    background-color: #27ae60; /* Verde */
     box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
 }
 
 .add-recipe-button:hover {
-    background-color: #2ecc71;
+    background-color: #2ecc71; /* Verde mais claro ao passar o mouse */
 }
 
 /* Estilo aprimorado para o botão "Voltar" */
@@ -202,6 +202,35 @@ ul li a {
     color: #e67e22; /* Cor de destaque para o título da seção */
 }
 
+/* Estilos para os botões de ação (Editar e Excluir) */
+.recipe-actions {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 15px; /* Espaçamento entre os botões */
+}
+
+.edit-button {
+    background-color: #007bff; /* Azul para editar */
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+}
+
+.delete-button {
+    background-color: #dc3545; /* Vermelho para excluir */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c82333; /* Vermelho mais escuro ao passar o mouse */
+}
+
 /* Responsividade básica */
 @media (max-width: 600px) {
     .container {
@@ -235,4 +264,89 @@ ul li a {
     .recipe-section-box {
         padding: 15px;
     }
+
+    .recipe-actions {
+        flex-direction: column; /* Empilha os botões em telas pequenas */
+        gap: 10px;
+    }
+
+    .recipe-actions .button-link,
+    .recipe-actions button {
+        width: 100%; /* Botões ocupam a largura total */
+    }
+}
+
+/* Estilos para o Modal de Confirmação */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fica no topo da página */
+    z-index: 1; /* Acima de tudo */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total */
+    height: 100%; /* Altura total */
+    overflow: auto; /* Habilita scroll se necessário */
+    background-color: rgba(0,0,0,0.4); /* Fundo escurecido */
+    display: flex; /* Usar flexbox para centralizar */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%; /* Largura do modal */
+    max-width: 500px; /* Largura máxima */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    text-align: center;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-buttons .button-link {
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.confirm-button {
+    background-color: #28a745; /* Verde para confirmar */
+}
+
+.confirm-button:hover {
+    background-color: #218838;
+}
+
+.cancel-button {
+    background-color: #6c757d; /* Cinza para cancelar */
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
 }

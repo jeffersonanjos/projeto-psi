@@ -28,6 +28,7 @@ def receita_detail(id):
     return render_template('recipe_detail.html', receita=receita)
 
 # Rota para adicionar nova receita: lida com a exibição do formulário e o processamento dos dados
+# Esta rota agora usa o template 'edit_recipe.html' para adicionar novas receitas
 @app.route('/nova', methods=['GET', 'POST'])
 def nova_receita():
     if request.method == 'POST':
@@ -38,7 +39,28 @@ def nova_receita():
         db.session.add(nova)
         db.session.commit()
         return redirect(url_for('index')) 
-    return render_template('new_recipe.html')
+    # Passa uma receita vazia para o formulário de nova receita
+    return render_template('edit_recipe.html', receita=None)
+
+# Rota para editar uma receita existente
+@app.route('/editar/<int:id>', methods=['GET', 'POST'])
+def editar_receita(id):
+    receita = Receita.query.get_or_404(id)
+    if request.method == 'POST':
+        receita.titulo = request.form['titulo']
+        receita.descricao = request.form['descricao']
+        receita.modo_preparo = request.form['modo_preparo']
+        db.session.commit()
+        return redirect(url_for('receita_detail', id=receita.id))
+    return render_template('edit_recipe.html', receita=receita)
+
+# Rota para excluir uma receita
+@app.route('/excluir/<int:id>', methods=['POST'])
+def excluir_receita(id):
+    receita = Receita.query.get_or_404(id)
+    db.session.delete(receita)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
