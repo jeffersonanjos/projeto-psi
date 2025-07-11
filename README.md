@@ -1,3 +1,31 @@
+## Como mexer no Github
+```text
+# 1. Pega as atualizações do repositório online
+git pull
+
+# 2. Prepara TODAS as suas alterações para envio
+git add .
+
+# 3. Cria um pacote com suas alterações (escreva uma mensagem clara)
+git commit -m "digite aqui o que você alterou"
+
+# 4. Envia suas alterações para o repositório online
+git push
+```
+
+## Como lidar com o requirements.txt
+
+```text
+# 1. Atualizar o arquivo requirements.txt com os pacotes instalados no ambiente
+pip freeze > requirements.txt
+
+# 2. Instalar os pacotes listados no requirements.txt
+pip install -r requirements.txt
+
+# 3. Atualizar os pacotes para as versões mais recentes (cuidado!)
+pip install --upgrade -r requirements.txt
+
+
 # 📅 Cronograma e Requisitos do Projeto
 
 ## ✅ Etapas do Projeto e Responsáveis
