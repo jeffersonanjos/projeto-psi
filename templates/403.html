@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acesso Negado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container error-page">
+        <h1>403</h1>
+        <h2>Acesso Negado.</h2>
+        <p>Você não tem permissão para acessar este recurso.</p>
+        <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Página Inicial</a>
+    </div>
+</body>
+</html>

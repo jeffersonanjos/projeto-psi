@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comentários sobre {{ receita.titulo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container comments-section">
+        <h1>Comentários sobre "{{ receita.titulo }}"</h1>
+        
+        <div class="comments-list">
+            {% for comentario in receita.comentarios %}
+                <div class="comment-box">
+                    <p class="comment-author">Comentado por: **{{ comentario.usuario.nome }}**</p>
+                    <p class="comment-content">{{ comentario.conteudo }}</p>
+                    <small class="comment-date">Em: {{ comentario.data_comentario.strftime('%d/%m/%Y às %H:%M') }}</small>
+                </div>
+            {% else %}
+                <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+            {% endfor %}
+        </div>
+
+        <div class="comment-form-container">
+            <h3>Adicionar um novo comentário</h3>
+            <form action="{{ url_for('adicionar_comentario', receita_id=receita.id) }}" method="POST">
+                <textarea name="conteudo" placeholder="Escreva seu comentário aqui..." required></textarea>
+                <button type="submit" class="submit-comment-button">Comentar</button>
+            </form>
+        </div>
+
+        <a href="{{ url_for('receita_detail', id=receita.id) }}" class="button-link back-button">Voltar para a Receita</a>
+    </div>
+</body>
+</html>

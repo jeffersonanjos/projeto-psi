@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minhas Notificações</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>Minhas Notificações</h1>
+        
+        {% if notificacoes %}
+            <ul>
+                {% for notificacao in notificacoes %}
+                    <li class="{{ 'visualizada' if notificacao.visualizado else 'nao-visualizada' }}">
+                        <a href="{{ url_for('receita_detail', id=notificacao.comentario.receita.id) }}">
+                            **{{ notificacao.comentario.usuario.nome }}** comentou em sua receita: "**{{ notificacao.comentario.receita.titulo }}**"
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Você não tem novas notificações.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Página Inicial</a>
+    </div>
+</body>
+</html>

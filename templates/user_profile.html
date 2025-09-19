@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Perfil de {{ usuario.nome }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container user-profile">
+        <h1>Perfil de {{ usuario.nome }}</h1>
+        <div class="profile-info">
+            {% if usuario.foto_perfil %}
+                <img src="{{ url_for('static', filename='images/' + usuario.foto_perfil) }}" alt="Foto de perfil" class="profile-image">
+            {% else %}
+                <div class="no-image">Sem Foto</div>
+            {% endif %}
+            
+            <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+            <p><strong>Bio:</strong> {{ usuario.bio or 'Nenhuma biografia disponível.' }}</p>
+        </div>
+        
+        <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
+    </div>
+</body>
+</html>

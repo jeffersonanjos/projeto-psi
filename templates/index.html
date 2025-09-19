@@ -14,10 +14,17 @@
     <div class="container">
         <!-- Título principal da página -->
         <h1>Receitas Deliciosas</h1>
+        <form action="/" method="get" class="search-form">
+            <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
+            <button type="submit">Buscar</button>
+        </form>
         <!-- Botão para adicionar uma nova receita -->
         <!-- O JavaScript é usado para redirecionar o usuário ao clicar no botão -->
         <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button">Adicionar Nova Receita</button>
         <!-- Lista de receitas -->
+        <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button">Adicionar Nova Receita</button>
+
+<button onclick="window.location.href='{{ url_for('favoritos', usuario_id=1) }}'" class="favorites-button">Minhas Receitas Favoritas</button>
         <ul>
             <!-- Loop para exibir cada receita na lista -->
             {% for r in receitas %}

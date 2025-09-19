@@ -22,12 +22,24 @@
 
         <!-- Botões de ação -->
         <div class="recipe-actions">
-            <!-- Botão Editar redireciona diretamente -->
             <a href="{{ url_for('editar_receita', id=receita.id) }}" class="button-link edit-button">Editar</a>
-
-            <!-- Botão Excluir abre o modal de confirmação -->
             <button type="button" class="button-link delete-button" onclick="showConfirmationModal();">Excluir</button>
+            
+            {% set favorito = receita.favoritado_por | selectattr('usuario_id', '==', 1) | list %}
+            {% if favorito %}
+                <form method="POST" action="{{ url_for('remover_favorito', receita_id=receita.id) }}" style="display:inline;">
+                    <button type="submit" class="button-link favorite-button favorited">Remover dos Favoritos</button>
+                </form>
+            {% else %}
+                <form method="POST" action="{{ url_for('adicionar_favorito', receita_id=receita.id) }}" style="display:inline;">
+                    <button type="submit" class="button-link favorite-button">Adicionar aos Favoritos</button>
+                </form>
+            {% endif %}
+        
+            <a href="{{ url_for('gerar_pdf', receita_id=receita.id) }}" class="button-link pdf-button">Gerar PDF</a>
         </div>
+        
+        <a href="{{ url_for('comentarios', receita_id=receita.id) }}" class="button-link comments-button">Ver Comentários</a>
 
         <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
     </div>
