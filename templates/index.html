@@ -18,13 +18,20 @@
             <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
             <button type="submit">Buscar</button>
         </form>
-        <!-- Botão para adicionar uma nova receita -->
-        <!-- O JavaScript é usado para redirecionar o usuário ao clicar no botão -->
-        <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button">Adicionar Nova Receita</button>
+        <!-- Botões de ações -->
+        <div class="actions-bar">
+            <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button button-link btn-primary">Adicionar Nova Receita</button>
+            {% if current_user_id %}
+            <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Favoritos</button>
+            <button onclick="window.location.href='{{ url_for('logout') }}'" class="button-link">Sair</button>
+            {% else %}
+            <button onclick="window.location.href='{{ url_for('login') }}'" class="button-link">Entrar</button>
+            <button onclick="window.location.href='{{ url_for('registrar') }}'" class="button-link btn-primary">Registrar</button>
+            {% endif %}
+        </div>
         <!-- Lista de receitas -->
-        <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button">Adicionar Nova Receita</button>
 
-<button onclick="window.location.href='{{ url_for('favoritos', usuario_id=1) }}'" class="favorites-button">Minhas Receitas Favoritas</button>
+<button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Minhas Receitas Favoritas</button>
         <ul>
             <!-- Loop para exibir cada receita na lista -->
             {% for r in receitas %}

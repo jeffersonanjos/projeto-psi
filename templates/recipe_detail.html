@@ -22,18 +22,24 @@
 
         <!-- Botões de ação -->
         <div class="recipe-actions">
+            {% if is_owner %}
             <a href="{{ url_for('editar_receita', id=receita.id) }}" class="button-link edit-button">Editar</a>
             <button type="button" class="button-link delete-button" onclick="showConfirmationModal();">Excluir</button>
-            
-            {% set favorito = receita.favoritado_por | selectattr('usuario_id', '==', 1) | list %}
-            {% if favorito %}
-                <form method="POST" action="{{ url_for('remover_favorito', receita_id=receita.id) }}" style="display:inline;">
-                    <button type="submit" class="button-link favorite-button favorited">Remover dos Favoritos</button>
-                </form>
+            {% endif %}
+
+            {% if current_user_id %}
+                {% set favorito = receita.favoritado_por | selectattr('usuario_id', '==', current_user_id) | list %}
+                {% if favorito %}
+                    <form method="POST" action="{{ url_for('remover_favorito', receita_id=receita.id) }}" style="display:inline;">
+                        <button type="submit" class="button-link favorite-button favorited">Remover dos Favoritos</button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{{ url_for('adicionar_favorito', receita_id=receita.id) }}" style="display:inline;">
+                        <button type="submit" class="button-link favorite-button">Adicionar aos Favoritos</button>
+                    </form>
+                {% endif %}
             {% else %}
-                <form method="POST" action="{{ url_for('adicionar_favorito', receita_id=receita.id) }}" style="display:inline;">
-                    <button type="submit" class="button-link favorite-button">Adicionar aos Favoritos</button>
-                </form>
+                <a href="{{ url_for('login') }}" class="button-link favorite-button">Entrar para favoritar</a>
             {% endif %}
         
             <a href="{{ url_for('gerar_pdf', receita_id=receita.id) }}" class="button-link pdf-button">Gerar PDF</a>

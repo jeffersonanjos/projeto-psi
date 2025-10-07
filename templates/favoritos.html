@@ -13,7 +13,10 @@
         {% if receitas %}
             <ul>
                 {% for r in receitas %}
-                    <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
+                    <li>
+                        <a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a>
+                        <a href="{{ url_for('receita_detail', id=r.id) }}" class="button-link btn-accent">Abrir</a>
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}
