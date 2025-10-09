@@ -31,8 +31,8 @@ body {
 }
 
 .container {
-  width: min(100%, 1400px);
-  max-width: 1400px;
+  width: 100%;
+  max-width: none;
   margin: 32px 0;
   padding: 28px;
   background: var(--card);

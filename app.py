@@ -151,6 +151,9 @@ def editar_receita(id):
     if not session.get('user_id'):
         flash('Faça login para editar receitas.')
         return redirect(url_for('login'))
+    if receita.usuario_id != session['user_id']:
+        flash('Você não tem permissão para editar esta receita.')
+        return redirect(url_for('receita_detail', id=receita.id))
     if request.method == 'POST':
         receita.titulo = request.form['titulo']
         receita.descricao = request.form['descricao']
@@ -168,7 +171,8 @@ def excluir_receita(id):
         flash('Faça login para excluir receitas.')
         return redirect(url_for('login'))
     if receita.usuario_id != session['user_id']:
-        abort(403)
+        flash('Você não tem permissão para excluir esta receita.')
+        return redirect(url_for('receita_detail', id=receita.id))
     db.session.delete(receita)
     db.session.commit()
     return redirect(url_for('index'))

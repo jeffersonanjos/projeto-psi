@@ -46,8 +46,26 @@
             <ul>
                 {% for r in receitas %}
                     <li>
-                        <a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a>
-                        <span class="badge">{{ r.tipo or 'Outros' }}</span>
+                        <span>
+                            <a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a>
+                            <span class="badge">{{ r.tipo or 'Outros' }}</span>
+                        </span>
+                        {% if current_user_id == r.usuario_id %}
+                        <span>
+                            <a class="button-link edit-button" href="{{ url_for('editar_receita', id=r.id) }}">Editar</a>
+                            <button class="button-link delete-button" onclick="confirmDelete{{ r.id }}()">Excluir</button>
+                        </span>
+                        <script>
+                            function confirmDelete{{ r.id }}(){
+                                if(confirm('Tem certeza que deseja excluir esta receita?')){
+                                    const f=document.createElement('form');
+                                    f.method='POST';
+                                    f.action='{{ url_for('excluir_receita', id=r.id) }}';
+                                    document.body.appendChild(f);f.submit();
+                                }
+                            }
+                        </script>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
