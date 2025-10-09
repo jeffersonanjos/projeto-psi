@@ -39,9 +39,13 @@
 
         <!-- Botões de ação -->
         <div class="recipe-actions">
-            {% if is_owner %}
+            {% if current_user_id %}
             <a href="{{ url_for('editar_receita', id=receita.id) }}" class="button-link edit-button">Editar</a>
+            {% if is_owner %}
             <button type="button" class="button-link delete-button" onclick="showConfirmationModal();">Excluir</button>
+            {% endif %}
+            {% else %}
+            <a href="{{ url_for('login') }}" class="button-link edit-button">Entrar para editar</a>
             {% endif %}
 
             {% if current_user_id %}

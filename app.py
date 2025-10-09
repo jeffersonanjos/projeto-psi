@@ -151,8 +151,6 @@ def editar_receita(id):
     if not session.get('user_id'):
         flash('Faça login para editar receitas.')
         return redirect(url_for('login'))
-    if receita.usuario_id != session['user_id']:
-        abort(403)
     if request.method == 'POST':
         receita.titulo = request.form['titulo']
         receita.descricao = request.form['descricao']
