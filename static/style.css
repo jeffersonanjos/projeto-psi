@@ -184,6 +184,45 @@ textarea {
   color: #ffffff;
 }
 
+/* Auth/register card shown on home for guests */
+.auth-card {
+  margin-top: 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 18px 18px 8px 18px;
+}
+.register-form {
+  display: grid;
+  gap: 12px;
+}
+.password-rules {
+  margin-top: -4px;
+}
+.password-rules p {
+  margin: 0 0 4px 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.requirements-list {
+  margin: 0 0 6px 0;
+  padding-left: 18px;
+  color: var(--muted);
+  list-style: disc inside;
+  display: block;
+}
+.requirements-list li {
+  margin: 4px 0;
+}
+.auth-footer {
+  text-align: center;
+  color: var(--muted);
+}
+.auth-footer a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 /* Lists as cards */
 ul {
   list-style: none;

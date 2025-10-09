@@ -23,32 +23,57 @@
                 </ul>
             {% endif %}
         {% endwith %}
-        <form action="/" method="get" class="search-form">
-            <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
-            <button type="submit">Buscar</button>
-        </form>
-        <!-- Botões de ações -->
-        <div class="actions-bar">
-            <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button button-link btn-primary">Adicionar Nova Receita</button>
-            {% if current_user_id %}
-            <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Favoritos</button>
-            <button onclick="window.location.href='{{ url_for('notificacoes') }}'" class="button-link btn-info">Notificações</button>
-            <button onclick="window.location.href='{{ url_for('logout') }}'" class="button-link">Sair</button>
-            {% else %}
-            <button onclick="window.location.href='{{ url_for('login') }}'" class="button-link">Entrar</button>
-            <button onclick="window.location.href='{{ url_for('registrar') }}'" class="button-link btn-primary">Registrar</button>
-            {% endif %}
-        </div>
-        <!-- Lista de receitas -->
+        {% if current_user_id %}
+            <form action="/" method="get" class="search-form">
+                <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
+                <button type="submit">Buscar</button>
+            </form>
+            <!-- Botões de ações -->
+            <div class="actions-bar">
+                <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button button-link btn-primary">Adicionar Nova Receita</button>
+                <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Favoritos</button>
+                <button onclick="window.location.href='{{ url_for('notificacoes') }}'" class="button-link btn-info">Notificações</button>
+                <button onclick="window.location.href='{{ url_for('logout') }}'" class="button-link">Sair</button>
+            </div>
+            <!-- Lista de receitas -->
+            <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Minhas Receitas Favoritas</button>
+            <ul>
+                {% for r in receitas %}
+                    <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <!-- Tela inicial para visitantes: formulário de cadastro -->
+            <div class="auth-card">
+                <form action="{{ url_for('registrar') }}" method="POST" class="register-form">
+                    <label for="nome">Nome*</label>
+                    <input type="text" id="nome" name="nome" placeholder="Nome" required>
 
-<button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Minhas Receitas Favoritas</button>
-        <ul>
-            <!-- Loop para exibir cada receita na lista -->
-            {% for r in receitas %}
-                <!-- Item da lista que contém um link para os detalhes da receita -->
-                <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
-            {% endfor %}
-        </ul>
+                    <label for="email">E-mail*</label>
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
+
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Deve conter pelo menos 8 caracteres e 1 dígito" required>
+
+                    <div class="password-rules">
+                        <p>Sua senha deve atender aos seguintes requisitos</p>
+                        <ul class="requirements-list">
+                            <li>8 caracteres mínimo</li>
+                            <li>1 dígito</li>
+                            <li>1 minúscula</li>
+                            <li>1 maiúscula</li>
+                            <li>1 carácter especial (ex: ! @ # $)</li>
+                        </ul>
+                    </div>
+
+                    <label for="confirmacao_senha">Confirmação da Senha</label>
+                    <input type="password" id="confirmacao_senha" name="confirmacao_senha" placeholder="Confirmação da Senha">
+
+                    <button type="submit" class="button-link btn-primary">Cadastrar ></button>
+                </form>
+                <p class="auth-footer">Já tenho uma conta, <a href="{{ url_for('login') }}">logar</a>.</p>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>
