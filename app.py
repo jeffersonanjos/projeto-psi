@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
 from models import db, Receita, Usuario, Favorito, Comentario, Ingrediente, ReceitaIngrediente, Notificacao, Avaliacao
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -152,7 +152,7 @@ def editar_receita(id):
         flash('Faça login para editar receitas.')
         return redirect(url_for('login'))
     if receita.usuario_id != session['user_id']:
-        return redirect(url_for('forbidden_error', e=None))
+        abort(403)
     if request.method == 'POST':
         receita.titulo = request.form['titulo']
         receita.descricao = request.form['descricao']
@@ -170,7 +170,7 @@ def excluir_receita(id):
         flash('Faça login para excluir receitas.')
         return redirect(url_for('login'))
     if receita.usuario_id != session['user_id']:
-        return redirect(url_for('forbidden_error', e=None))
+        abort(403)
     db.session.delete(receita)
     db.session.commit()
     return redirect(url_for('index'))

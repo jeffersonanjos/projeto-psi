@@ -32,14 +32,14 @@
             {% if receita %}
                 <button type="button" class="button-link btn-primary" onclick="showSaveConfirmationModal();">Salvar</button>
             {% else %}
-                <button type="button" class="button-link btn-primary" onclick="showSaveConfirmationModal();">Salvar</button>
+                <button type="submit" class="button-link btn-primary">Salvar</button>
             {% endif %}
         </form>
 
         <a href="{{ url_for('index') }}" class="button-link back-button">Voltar para a Lista</a>
     </div>
 
-    {% if True %}
+    {% if receita %}
     <!-- Modal de Confirmação para Salvar -->
     <div id="saveConfirmationModal" class="modal">
         <div class="modal-content">
