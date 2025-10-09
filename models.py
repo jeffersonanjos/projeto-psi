@@ -9,7 +9,7 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=True) # Adicionei email para consistência
-    senha = db.Column(db.String(100), nullable=True) # Adicionei senha
+    senha = db.Column(db.String(255), nullable=True) # Armazena hash de senha
     foto_perfil = db.Column(db.String(255), nullable=True)
     bio = db.Column(db.Text, nullable=True)
 

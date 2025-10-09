@@ -4,6 +4,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from flask import send_file
 import io
+from werkzeug.security import generate_password_hash, check_password_hash
+from email_utils import send_email
 
 # Configuração da aplicação Flask
 app = Flask(__name__)
@@ -16,7 +18,11 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     if not Usuario.query.first():
-        user = Usuario(nome="Usuário Exemplo", email="exemplo@teste.com", senha="123456")
+        user = Usuario(
+            nome="Usuário Exemplo",
+            email="exemplo@teste.com",
+            senha=generate_password_hash("123456")
+        )
         db.session.add(user)
         db.session.commit()
 
@@ -212,6 +218,26 @@ def adicionar_comentario(receita_id):
         novo_comentario = Comentario(conteudo=conteudo, usuario_id=usuario_id, receita_id=receita_id)
         db.session.add(novo_comentario)
         db.session.commit()
+
+        # Cria notificação para o dono da receita e envia e-mail
+        if receita.usuario_id != usuario_id:
+            notificacao = Notificacao(visualizado=False, usuario_id=receita.usuario_id, comentario_id=novo_comentario.id)
+            db.session.add(notificacao)
+            db.session.commit()
+            try:
+                destinatario = receita.usuario.email
+                if destinatario:
+                    assunto = f"Novo comentário na sua receita: {receita.titulo}"
+                    corpo = (
+                        f"Olá, {receita.usuario.nome}!\n\n"
+                        f"Você recebeu um novo comentário na sua receita '{receita.titulo}'.\n\n"
+                        f"Comentário: {conteudo}\n\n"
+                        "Acesse o site para responder."
+                    )
+                    send_email(assunto, corpo, destinatario)
+            except Exception:
+                # Entrega de e-mail é melhor esforço; não falhar o fluxo
+                pass
     
     return redirect(url_for('comentarios', receita_id=receita.id))
 
@@ -235,11 +261,20 @@ def registrar():
         if Usuario.query.filter_by(email=email).first():
             flash('E-mail já cadastrado.')
             return redirect(url_for('registrar'))
-        novo = Usuario(nome=nome, email=email, senha=senha)
+        novo = Usuario(nome=nome, email=email, senha=generate_password_hash(senha))
         db.session.add(novo)
         db.session.commit()
-        flash('Cadastro realizado. Faça login.')
-        return redirect(url_for('login'))
+        # E-mail de boas-vindas (não bloqueante)
+        try:
+            send_email(
+                'Bem-vindo ao Receitas App',
+                f'Olá, {nome}! Seu cadastro foi realizado com sucesso. Boas receitas!',
+                email,
+            )
+        except Exception:
+            pass
+        flash('Cadastro realizado com sucesso!')
+        return redirect(url_for('index'))
     return render_template('register.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -247,8 +282,8 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
-        user = Usuario.query.filter_by(email=email, senha=senha).first()
-        if not user:
+        user = Usuario.query.filter_by(email=email).first()
+        if not user or not check_password_hash(user.senha, senha):
             flash('Credenciais inválidas.')
             return redirect(url_for('login'))
         session['user_id'] = user.id
@@ -261,6 +296,22 @@ def logout():
     session.pop('user_id', None)
     flash('Você saiu da conta.')
     return redirect(url_for('index'))
+
+
+# Notificações do usuário logado
+@app.route('/notificacoes')
+def notificacoes():
+    if not session.get('user_id'):
+        flash('Faça login para ver suas notificações.')
+        return redirect(url_for('login'))
+    usuario_id = session['user_id']
+    notificacoes = Notificacao.query.filter_by(usuario_id=usuario_id).all()
+    # Marca como visualizadas após carregar
+    for n in notificacoes:
+        if not n.visualizado:
+            n.visualizado = True
+    db.session.commit()
+    return render_template('notifications.html', notificacoes=notificacoes)
 
 if __name__ == '__main__':
     app.run(debug=True)

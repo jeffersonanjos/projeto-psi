@@ -14,6 +14,15 @@
     <div class="container">
         <!-- Título principal da página -->
         <h1>Receitas Deliciosas</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-list">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
         <form action="/" method="get" class="search-form">
             <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
             <button type="submit">Buscar</button>
@@ -23,6 +32,7 @@
             <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button button-link btn-primary">Adicionar Nova Receita</button>
             {% if current_user_id %}
             <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Favoritos</button>
+            <button onclick="window.location.href='{{ url_for('notificacoes') }}'" class="button-link btn-info">Notificações</button>
             <button onclick="window.location.href='{{ url_for('logout') }}'" class="button-link">Sair</button>
             {% else %}
             <button onclick="window.location.href='{{ url_for('login') }}'" class="button-link">Entrar</button>
