@@ -196,24 +196,7 @@ textarea {
   display: grid;
   gap: 12px;
 }
-.password-rules {
-  margin-top: -4px;
-}
-.password-rules p {
-  margin: 0 0 4px 0;
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-.requirements-list {
-  margin: 0 0 6px 0;
-  padding-left: 18px;
-  color: var(--muted);
-  list-style: disc inside;
-  display: block;
-}
-.requirements-list li {
-  margin: 4px 0;
-}
+/* removed password requirements UI styles */
 .auth-footer {
   text-align: center;
   color: var(--muted);
