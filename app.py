@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from models import db, Receita, Usuario, Favorito, Comentario, Ingrediente, ReceitaIngrediente, Notificacao
+from models import db, Receita, Usuario, Favorito, Comentario, Ingrediente, ReceitaIngrediente, Notificacao, Avaliacao
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from flask import send_file
 import io
+import textwrap
 from werkzeug.security import generate_password_hash, check_password_hash
 from email_utils import send_email
+from sqlalchemy import text as sa_text, or_
 
 # Configuração da aplicação Flask
 app = Flask(__name__)
@@ -17,6 +19,16 @@ db.init_app(app)
 # Inicialização do banco de dados e criação de um usuário padrão
 with app.app_context():
     db.create_all()
+    # Garante coluna 'tipo' na tabela receita (migração simples para SQLite)
+    try:
+        with db.engine.connect() as conn:
+            result = conn.execute(sa_text("PRAGMA table_info('receita')"))
+            col_names = [row[1] for row in result]
+            if 'tipo' not in col_names:
+                conn.execute(sa_text("ALTER TABLE receita ADD COLUMN tipo VARCHAR(50) DEFAULT 'Outros'"))
+    except Exception:
+        # Em ambientes diferentes pode não ser necessário; seguir sem interromper
+        pass
     if not Usuario.query.first():
         user = Usuario(
             nome="Usuário Exemplo",
@@ -41,25 +53,51 @@ def forbidden_error(e):
 @app.route('/')
 def index():
     current_user_id = session.get('user_id')
-    query = request.args.get('query')
-    if query:
-        # Divide a string de busca em ingredientes individuais
-        ingredientes_buscados = [ing.strip().lower() for ing in query.split(',')]
-        
-        # Constrói a lista de IDs de receitas que contêm os ingredientes
-        receita_ids = db.session.query(ReceitaIngrediente.receita_id).join(Ingrediente).filter(
-            Ingrediente.nome.in_(ingredientes_buscados)
-        ).group_by(ReceitaIngrediente.receita_id).having(db.func.count(Ingrediente.id) == len(ingredientes_buscados)).all()
-        
-        # Extrai os IDs da tupla
-        receita_ids = [r[0] for r in receita_ids]
-        
-        # Filtra as receitas pelos IDs encontrados
-        receitas = Receita.query.filter(Receita.id.in_(receita_ids)).order_by(Receita.data_postagem.desc()).all()
-    else:
-        receitas = Receita.query.order_by(Receita.data_postagem.desc()).all()
-    
-    return render_template('index.html', receitas=receitas, query=query, current_user_id=current_user_id)
+    # Parâmetros de busca: 'query' (ingredientes), 'q' (título/descrição) e 'tipo' (categoria)
+    query_ingredientes = request.args.get('query')
+    q = request.args.get('q')
+    tipo = request.args.get('tipo')
+
+    categorias = [
+        'Canais Especiais', 'Notícias', 'Bolos e Tortas', 'Carnes', 'Aves',
+        'Peixes e Frutos do Mar', 'Saladas e Molhos', 'Sopas', 'Massas', 'Bebidas',
+        'Doces e Sobremesas', 'Lanches', 'Alimentação Saudável', 'Outros'
+    ]
+
+    base_query = Receita.query
+
+    if query_ingredientes:
+        ingredientes_buscados = [ing.strip().lower() for ing in query_ingredientes.split(',') if ing.strip()]
+        if ingredientes_buscados:
+            receita_ids = (
+                db.session.query(ReceitaIngrediente.receita_id)
+                .join(Ingrediente)
+                .filter(Ingrediente.nome.in_(ingredientes_buscados))
+                .group_by(ReceitaIngrediente.receita_id)
+                .having(db.func.count(Ingrediente.id) == len(ingredientes_buscados))
+                .all()
+            )
+            receita_ids = [r[0] for r in receita_ids]
+            base_query = base_query.filter(Receita.id.in_(receita_ids))
+
+    if q:
+        like = f"%{q}%"
+        base_query = base_query.filter(or_(Receita.titulo.ilike(like), Receita.descricao.ilike(like)))
+
+    if tipo and tipo != 'Todos':
+        base_query = base_query.filter(Receita.tipo == tipo)
+
+    receitas = base_query.order_by(Receita.data_postagem.desc()).all()
+
+    return render_template(
+        'index.html',
+        receitas=receitas,
+        query=query_ingredientes,
+        q=q,
+        tipo=tipo,
+        categorias=categorias,
+        current_user_id=current_user_id,
+    )
 
 
 # Rota para detalhes da receita: exibe informações de uma receita específica por ID
@@ -68,7 +106,24 @@ def receita_detail(id):
     receita = Receita.query.get_or_404(id)
     current_user_id = session.get('user_id')
     is_owner = current_user_id == receita.usuario_id if current_user_id else False
-    return render_template('recipe_detail.html', receita=receita, current_user_id=current_user_id, is_owner=is_owner)
+    # Média e minha avaliação
+    media = db.session.query(db.func.avg(Avaliacao.nota)).filter_by(receita_id=id).scalar() or 0
+    media = round(float(media), 1) if media else 0
+    total = db.session.query(db.func.count(Avaliacao.id)).filter_by(receita_id=id).scalar() or 0
+    minha = None
+    if current_user_id:
+        av = Avaliacao.query.filter_by(usuario_id=current_user_id, receita_id=id).first()
+        if av:
+            minha = av.nota
+    return render_template(
+        'recipe_detail.html',
+        receita=receita,
+        current_user_id=current_user_id,
+        is_owner=is_owner,
+        media_avaliacao=media,
+        total_avaliacoes=total,
+        minha_avaliacao=minha,
+    )
 
 # Rota para adicionar nova receita: lida com a exibição do formulário e o processamento dos dados
 # Esta rota agora usa o template 'edit_recipe.html' para adicionar novas receitas
@@ -81,7 +136,8 @@ def nova_receita():
         titulo = request.form['titulo']
         descricao = request.form['descricao']
         modo_preparo = request.form['modo_preparo']
-        nova = Receita(titulo=titulo, descricao=descricao, modo_preparo=modo_preparo, usuario_id=session['user_id'])
+        tipo = request.form.get('tipo') or 'Outros'
+        nova = Receita(titulo=titulo, descricao=descricao, modo_preparo=modo_preparo, tipo=tipo, usuario_id=session['user_id'])
         db.session.add(nova)
         db.session.commit()
         return redirect(url_for('index')) 
@@ -101,6 +157,7 @@ def editar_receita(id):
         receita.titulo = request.form['titulo']
         receita.descricao = request.form['descricao']
         receita.modo_preparo = request.form['modo_preparo']
+        receita.tipo = request.form.get('tipo') or receita.tipo
         db.session.commit()
         return redirect(url_for('receita_detail', id=receita.id))
     return render_template('edit_recipe.html', receita=receita)
@@ -178,25 +235,69 @@ def gerar_pdf(receita_id):
     c = canvas.Canvas(buffer, pagesize=letter)
     
     # Define o título do PDF
-    c.drawString(100, 750, f"Lista de Compras para: {receita.titulo}")
-    c.drawString(100, 730, "-" * 50)
+    c.drawString(72, 770, f"Receita: {receita.titulo}")
+    c.drawString(72, 754, f"Tipo: {receita.tipo or 'Outros'}")
+    c.drawString(72, 740, "-" * 80)
     
-    # Escreve a lista de ingredientes
-    y_pos = 710
+    # Descrição
+    y_pos = 720
+    if receita.descricao:
+        for line in textwrap.wrap(receita.descricao, width=90):
+            c.drawString(72, y_pos, line)
+            y_pos -= 14
+    y_pos -= 10
+    c.drawString(72, y_pos, "Ingredientes:")
+    y_pos -= 16
     for item in ingredientes_receita:
         ingrediente = item.ingrediente
         quantidade = item.quantidade
-        c.drawString(100, y_pos, f"- {ingrediente.nome}: {quantidade}")
-        y_pos -= 20
+        c.drawString(90, y_pos, f"- {ingrediente.nome}: {quantidade}")
+        y_pos -= 16
         if y_pos < 100:  # Quebra de página se o conteúdo for muito longo
             c.showPage()
-            y_pos = 750
+            y_pos = 770
+
+    y_pos -= 10
+    c.drawString(72, y_pos, "Modo de Preparo:")
+    y_pos -= 16
+    if receita.modo_preparo:
+        for line in textwrap.wrap(receita.modo_preparo, width=95):
+            c.drawString(72, y_pos, line)
+            y_pos -= 14
+            if y_pos < 100:
+                c.showPage()
+                y_pos = 770
 
     c.save()
     buffer.seek(0)
     
     # Retorna o arquivo PDF para download
     return send_file(buffer, as_attachment=True, download_name=f'lista_compras_{receita.titulo}.pdf', mimetype='application/pdf')
+
+# Rota para avaliar receita (1-5 estrelas)
+@app.route('/receita/<int:receita_id>/avaliar', methods=['POST'])
+def avaliar_receita(receita_id):
+    if not session.get('user_id'):
+        flash('Faça login para avaliar receitas.')
+        return redirect(url_for('login'))
+    receita = Receita.query.get_or_404(receita_id)
+    usuario_id = session['user_id']
+    try:
+        nota = int(request.form.get('nota', 0))
+    except ValueError:
+        nota = 0
+    if nota < 1 or nota > 5:
+        flash('Avaliação inválida.')
+        return redirect(url_for('receita_detail', id=receita.id))
+
+    avaliacao = Avaliacao.query.filter_by(usuario_id=usuario_id, receita_id=receita_id).first()
+    if avaliacao:
+        avaliacao.nota = nota
+    else:
+        db.session.add(Avaliacao(nota=nota, usuario_id=usuario_id, receita_id=receita_id))
+    db.session.commit()
+    flash('Avaliação registrada!')
+    return redirect(url_for('receita_detail', id=receita.id))
 
 # Rota para exibir a página de comentários de uma receita
 @app.route('/receita/<int:receita_id>/comentarios')

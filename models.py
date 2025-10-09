@@ -20,6 +20,8 @@ class Receita(db.Model):
     descricao = db.Column(db.Text)
     modo_preparo = db.Column(db.Text)
     imagem = db.Column(db.String(255), nullable=True) # Campo para a imagem
+    # Tipo/categoria da receita (ex.: Bolos e tortas, Massas, Carnes)
+    tipo = db.Column(db.String(50), default='Outros')
     data_postagem = db.Column(db.DateTime, default=datetime.utcnow)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     usuario = db.relationship('Usuario', backref=db.backref('receitas', lazy=True))
@@ -68,3 +70,20 @@ class Notificacao(db.Model):
 
     usuario = db.relationship('Usuario', backref=db.backref('notificacoes', lazy=True))
     comentario = db.relationship('Comentario', backref=db.backref('notificacao', lazy=True, uselist=False))
+
+# Avaliação de receita (1 a 5 estrelas)
+from sqlalchemy import UniqueConstraint
+
+class Avaliacao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nota = db.Column(db.Integer, nullable=False)  # 1..5
+    criado_em = db.Column(db.DateTime, default=datetime.utcnow)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    receita_id = db.Column(db.Integer, db.ForeignKey('receita.id'), nullable=False)
+
+    usuario = db.relationship('Usuario', backref=db.backref('avaliacoes', lazy=True))
+    receita = db.relationship('Receita', backref=db.backref('avaliacoes', lazy=True))
+
+    __table_args__ = (
+        UniqueConstraint('usuario_id', 'receita_id', name='uix_usuario_receita_avaliacao'),
+    )

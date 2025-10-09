@@ -25,9 +25,15 @@
         {% endwith %}
         {% if current_user_id %}
             <form action="/" method="get" class="search-form">
-                <input type="text" name="query" placeholder="Buscar por ingredientes (ex: arroz, feijão)" value="{{ query or '' }}">
-                <button type="submit">Buscar</button>
+                <input type="text" name="q" placeholder="Procure uma receita, um ingrediente, um tipo de prato ..." value="{{ q or '' }}">
+                <button type="submit">Procurar</button>
             </form>
+            <div class="category-bar">
+                <a href="{{ url_for('index') }}" class="category {{ 'active' if not tipo }}">Todos</a>
+                {% for c in categorias %}
+                    <a href="{{ url_for('index', tipo=c) }}" class="category {{ 'active' if tipo==c }}">{{ c }}</a>
+                {% endfor %}
+            </div>
             <!-- Botões de ações -->
             <div class="actions-bar">
                 <button onclick="window.location.href='{{ url_for('nova_receita') }}'" class="add-recipe-button button-link btn-primary">Adicionar Nova Receita</button>
@@ -39,7 +45,10 @@
             <button onclick="window.location.href='{{ url_for('meus_favoritos') }}'" class="button-link btn-accent">Minhas Receitas Favoritas</button>
             <ul>
                 {% for r in receitas %}
-                    <li><a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a></li>
+                    <li>
+                        <a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a>
+                        <span class="badge">{{ r.tipo or 'Outros' }}</span>
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}
