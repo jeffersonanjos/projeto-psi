@@ -46,15 +46,21 @@
             <ul>
                 {% for r in receitas %}
                     <li>
-                        <span>
+                        <div class="meta-row">
                             <a href="{{ url_for('receita_detail', id=r.id) }}">{{ r.titulo }}</a>
                             <span class="badge">{{ r.tipo or 'Outros' }}</span>
-                        </span>
+                        </div>
+                        {% set media = (r.avaliacoes | map(attribute='nota') | list) %}
+                        {% if media and media|length > 0 %}
+                        <small style="color:#6b7280">Média: {{ (media|sum / media|length)|round(1) }} ★</small>
+                        {% else %}
+                        <small style="color:#94a3b8">Sem avaliações ainda</small>
+                        {% endif %}
                         {% if current_user_id == r.usuario_id %}
-                        <span>
+                        <div class="card-actions">
                             <a class="button-link edit-button" href="{{ url_for('editar_receita', id=r.id) }}">Editar</a>
                             <button class="button-link delete-button" onclick="confirmDelete{{ r.id }}()">Excluir</button>
-                        </span>
+                        </div>
                         <script>
                             function confirmDelete{{ r.id }}(){
                                 if(confirm('Tem certeza que deseja excluir esta receita?')){
