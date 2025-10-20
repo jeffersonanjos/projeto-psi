@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil de {{ usuario.nome }} - MemóriaViva{% endblock %}
+
+{% block content %}
+<script>
+// Garantir que o loader seja escondido quando a página do perfil carregar
+document.addEventListener('DOMContentLoaded', function() {
+    const loader = document.getElementById('globalLoader');
+    if (loader) {
+        loader.classList.remove('show');
+    }
+});
+</script>
+<style>
+.timeline-item {
+    position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 50px;
+    width: 2px;
+    height: calc(100% - 30px);
+    background: #dee2e6;
+    z-index: 1;
+}
+
+.timeline-icon {
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border-left: 3px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    background: #e9ecef;
+    border-left-color: #007bff;
+    transform: translateX(5px);
+}
+
+.activity-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.activity-link:hover {
+    color: #007bff;
+}
+</style>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="color: #ffffff;">Perfil de {{ usuario.nome }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            {% if usuario.profile_picture %}
+                                <img src="{{ usuario.profile_picture }}" alt="Foto de {{ usuario.nome }}" class="rounded-circle mb-3" width="150" height="150">
+                            {% else %}
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px; font-size: 3rem;">
+                                    {{ usuario.nome[0].upper() }}
+                                </div>
+                            {% endif %}
+                            
+                            {% if current_user.is_authenticated and current_user.id == usuario.id %}
+                                <div class="d-grid gap-2">
+                                    <a href="{{ url_for('users.edit_user', user_id=usuario.id) }}" class="btn btn-primary">Editar Perfil</a>
+                                    <form method="POST" action="{{ url_for('users.delete_user') }}" 
+                                          onsubmit="return confirm('Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita.')">
+                                        <button type="submit" class="btn btn-danger w-100">Deletar Conta</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <h4>{{ usuario.nome }}</h4>
+                            <p style="color: #000 !important;">{{ usuario.email }}</p>
+                            
+                            <hr>
+                            
+                            <div class="mb-3">
+                                <strong>Membro desde:</strong> {{ usuario.criado_em.strftime('%d de %B de %Y') }}
+                            </div>
+                            
+                            {% if usuario.biografia %}
+                                <div class="mb-3">
+                                    <strong>Biografia:</strong>
+                                    <p class="mt-2">{{ usuario.biografia }}</p>
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <em style="color: #000;">Nenhuma biografia disponível.</em>
+                                </div>
+                            {% endif %}
+                            
+                            <hr>
+                            
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <h5>{{ usuario.comentarios.count() }}</h5>
+                                    <small style="color: #000 !important;">Comentários</small>
+                                </div>
+                                <div class="col-4">
+                                    <h5>{{ usuario.likes.count() }}</h5>
+                                    <small style="color: #000 !important;">Likes</small>
+                                </div>
+                                <div class="col-4">
+                                    <h5>{{ usuario.avaliacoes.count() }}</h5>
+                                    <small style="color: #000 !important;">Avaliações</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção de atividades recentes -->
+            <div class="card mt-4 mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" style="color: #ffffff!important;">Atividades Recentes</h5>
+                    <small style="color: #fffff !important;">Últimos 30 dias</small>
+                </div>
+                <div class="card-body">
+                    {% if activities %}
+                        <div class="timeline">
+                            {% for activity in activities %}
+                                <div class="timeline-item mb-4">
+                                    <div class="d-flex align-items-start">
+                                        <div class="timeline-icon me-3">
+                                            <div class="bg-{{ activity.color }} text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 40px; height: 40px;">
+                                                <i class="{{ activity.icon }}"></i>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-content flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h6 class="mb-0">
+                                                    <a href="{{ activity.url }}" class="activity-link">
+                                                        {{ activity.title }}
+                                                    </a>
+                                                </h6>
+                                                <span class="badge bg-{{ activity.color }}">
+                                                    {% if activity.type == 'rating' %}Avaliação
+                                                    {% elif activity.type == 'post' %}Post
+                                                    {% elif activity.type == 'comment' %}Comentário
+                                                    {% elif activity.type == 'like' %}Curtida
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <p class="text-muted mb-2 small">{{ activity.description }}</p>
+                                            <div class="d-flex align-items-center">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock me-1"></i>
+                                                    {{ activity.date.strftime('%d/%m/%Y às %H:%M') }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        {% if activities|length == 10 %}
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle"></i>
+                                    Mostrando as 10 atividades mais recentes
+                                </small>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-history fa-3x text-muted mb-3" style="color: #000 !important;"></i>
+                            <p class="text-muted" style="color: #000 !important;">Nenhuma atividade recente encontrada.</p>
+                            <small class="text-muted" style="color: #000 !important;">
+                                As atividades dos últimos 30 dias aparecerão aqui.
+                            </small>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Editar {{ content.title }} - MemóriaViva{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
+          <h4 class="mb-0 fw-semibold">Editar Obra</h4>
+        </div>
+
+        <div class="card-body p-4">
+          <form id="editContentForm" method="POST" enctype="multipart/form-data">
+            
+            <!-- Título e Tipo -->
+            <div class="row">
+              <div class="col-md-8 mb-3">
+                <label for="title" class="form-label fw-semibold">Título</label>
+                <input type="text" class="form-control rounded-3 shadow-sm"
+                       id="title" name="title" value="{{ content.title }}" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="type" class="form-label fw-semibold">Tipo</label>
+                <select class="form-select rounded-3 shadow-sm" id="type" name="type" required>
+                  <option value="artigo" {{ 'selected' if content.type == 'artigo' else '' }}>Artigo</option>
+                  <option value="foto" {{ 'selected' if content.type == 'foto' else '' }}>Foto</option>
+                  <option value="entrevista" {{ 'selected' if content.type == 'entrevista' else '' }}>Entrevista</option>
+                  <option value="relato" {{ 'selected' if content.type == 'relato' else '' }}>Relato</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Descrição -->
+            <div class="mb-3">
+              <label for="description" class="form-label fw-semibold">Breve Descrição</label>
+              <textarea class="form-control rounded-3 shadow-sm" id="description" name="description" rows="4" required>{{ content.description or '' }}</textarea>
+            </div>
+
+            <!-- Link do YouTube -->
+            <div class="mb-3">
+              <label for="url" class="form-label fw-semibold">Link do YouTube</label>
+              <input type="url" class="form-control rounded-3 shadow-sm" id="url" name="url"
+                     value="{{ content.url or '' }}" placeholder="https://youtube.com/watch?v=...">
+              <small class="text-muted">Link do YouTube relacionado à obra</small>
+            </div>
+
+            <!-- Upload de arquivo -->
+            <div class="mb-3">
+              <label for="file" class="form-label fw-semibold">
+                Arquivo da Obra (PDF ou EPUB)
+                <span class="text-muted small">(opcional se houver link do YouTube)</span>
+              </label>
+              <input type="file" class="form-control rounded-3 shadow-sm"
+                     id="file" name="file" accept=".pdf,.epub">
+              <small class="text-muted">Formatos aceitos: PDF, EPUB. Arquivo ou YouTube é obrigatório.</small>
+            </div>
+
+            <!-- URL da capa e Data -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="thumbnail" class="form-label fw-semibold">URL da Capa (opcional)</label>
+                <input type="url" class="form-control rounded-3 shadow-sm"
+                       id="thumbnail" name="thumbnail"
+                       value="{{ content.thumbnail or '' }}" placeholder="https://...">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="release_date" class="form-label fw-semibold">Data de Publicação (opcional)</label>
+                <input type="date" class="form-control rounded-3 shadow-sm"
+                       id="release_date" name="release_date"
+                       value="{{ content.release_date.strftime('%Y-%m-%d') if content.release_date else '' }}">
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="d-flex justify-content-between mt-4">
+              <a href="{{ url_for('content.view_content', content_id=content.id) }}" class="btn btn-secondary rounded-pill px-4">
+                Cancelar
+              </a>
+              <button type="submit" class="btn btn-success rounded-pill px-5" id="saveChangesBtn">
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('editContentForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+  const btn = document.getElementById('saveChangesBtn');
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Salvando...';
+  
+  try {
+    const response = await fetch(window.location.pathname, { method: "POST", body: formData });
+    if (response.ok) {
+      btn.innerHTML = "✅ Salvo!";
+      setTimeout(() => window.location.href = "{{ url_for('content.list_content') }}", 1000);
+    } else throw new Error("Erro ao salvar alterações.");
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao salvar alterações.");
+    btn.disabled = false;
+    btn.textContent = "Salvar Alterações";
+  }
+});
+</script>
+{% endblock %}
