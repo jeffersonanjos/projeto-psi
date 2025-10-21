@@ -7,7 +7,7 @@
     <div class="col-md-8">
       <div class="card shadow-sm rounded-4 border-0">
         <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
-          <h4 class="mb-0 fw-semibold">Editar Obra</h4>
+          <h4 class="mb-0 fw-semibold" style="color: white;">Editar Obra</h4>
         </div>
 
         <div class="card-body p-4">
@@ -101,7 +101,7 @@ document.getElementById('editContentForm').addEventListener('submit', async e =>
   try {
     const response = await fetch(window.location.pathname, { method: "POST", body: formData });
     if (response.ok) {
-      btn.innerHTML = "✅ Salvo!";
+      btn.innerHTML = "Salvo!";
       setTimeout(() => window.location.href = "{{ url_for('content.list_content') }}", 1000);
     } else throw new Error("Erro ao salvar alterações.");
   } catch (err) {
