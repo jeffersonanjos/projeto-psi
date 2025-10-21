@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from ..models import db, Category, ContentCategory
 
+# Blueprint para rotas relacionadas a categorias
 categories_bp = Blueprint('categories', __name__, url_prefix='/categories')
 
+# Verifica se o usuário logado é administrador
 def _require_admin():
     if not current_user.is_authenticated or not current_user.is_admin:
         flash('Acesso negado. Apenas administradores.', 'danger')
@@ -24,6 +26,7 @@ def list_categories():
 @categories_bp.route('/create', methods=['POST'])
 @login_required
 def create_category():
+    # Somente administradores podem excluir categorias
     if not _require_admin():
         return redirect(url_for('categories.list_categories'))
     nome = (request.form.get('nome') or '').strip()
@@ -44,7 +47,7 @@ def create_category():
 def delete_category(category_id: int):
     if not _require_admin():
         return redirect(url_for('categories.list_categories'))
-    cat = Category.query.get_or_404(category_id)
+    cat = Category.query.get_or_404(category_id)    # Impede exclusão se houver conteúdos associados  
     associated = db.session.query(ContentCategory).filter_by(category_id=category_id).count()
     if associated:
         flash('Não é possível excluir: existem conteúdos associados.', 'danger')

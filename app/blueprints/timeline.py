@@ -7,14 +7,14 @@ timeline_bp = Blueprint('timeline', __name__, url_prefix='/timeline')
 
 
 @timeline_bp.route('/')
-def index():
+def index():    # Exibe os marcos da linha do tempo, ordenados por ano
     items = TimelineModel.query.order_by(TimelineModel.ano.asc(), TimelineModel.id.asc()).all()
     return render_template('timeline.html', items=items)
 
 
 @timeline_bp.route('/create', methods=['POST'])
 @login_required
-def create():
+def create():  # Cria um novo marco (apenas admins)
     if not current_user.is_admin:
         flash('Apenas administradores podem criar marcos da linha do tempo.', 'danger')
         return redirect(url_for('timeline.index'))
@@ -37,7 +37,7 @@ def create():
 
 @timeline_bp.route('/<int:item_id>/delete', methods=['POST'])
 @login_required
-def delete(item_id: int):
+def delete(item_id: int):  # Remove um marco da linha do tempo (apenas admins)
     if not current_user.is_admin:
         flash('Apenas administradores podem excluir marcos.', 'danger')
         return redirect(url_for('timeline.index'))

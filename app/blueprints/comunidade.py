@@ -174,14 +174,11 @@ def delete_community(community_id):
     try:
         # Deletar todos os posts relacionados (e seus likes/comentários serão deletados em cascata)
         CommunityPost.query.filter_by(community_id=community_id).delete()
-        
         # Deletar todos os bloqueios relacionados à comunidade
         CommunityBlock.query.filter_by(community_id=community_id).delete()
-        
         # Deletar a comunidade
         db.session.delete(comunidade)
         db.session.commit()
-        
         flash(f'Comunidade "{community_name}" foi apagada com sucesso.', 'success')
     except Exception as e:
         db.session.rollback()

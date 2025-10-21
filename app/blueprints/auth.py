@@ -1,9 +1,9 @@
-# app/blueprints/auth.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from ..models import Usuario, db
 from ..extensions import login_manager
 
+# Blueprint para rotas de autenticação
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
@@ -44,7 +44,7 @@ def register():
         next_page = request.args.get('next') or url_for('main.index')
         return redirect(next_page)
 
-    # GET
+    
     return render_template('auth/register.html')
 
 
@@ -72,7 +72,7 @@ def login():
             flash('E-mail ou senha incorretos.', 'danger')
             return redirect(url_for('auth.login'))
 
-    # GET
+
     return render_template('auth/login.html')
 
 @auth_bp.route('/logout')

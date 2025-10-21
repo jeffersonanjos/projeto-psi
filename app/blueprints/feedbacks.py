@@ -18,6 +18,7 @@ def enviar_feedback():
             return render_template('feedbacks.html')
 
         # Envia email para destinatário fixo
+        # o email fixo serve para chegar os feedbacks
         destinatario = 'jefferson.anjos@escolar.ifrn.edu.br'
         corpo = f"Nome: {nome}\nEmail do remetente: {email}\nAssunto: {assunto}\n\n{mensagem}"
         msg = MIMEText(corpo, 'plain', 'utf-8')

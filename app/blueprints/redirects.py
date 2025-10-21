@@ -1,4 +1,3 @@
-# app/blueprints/redirects.py
 # Blueprint para manter compatibilidade com URLs antigas
 from flask import Blueprint, redirect, url_for
 

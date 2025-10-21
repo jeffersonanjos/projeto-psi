@@ -9,7 +9,7 @@ chat_bp = Blueprint('chat', __name__)
 
 @chat_bp.route('/send_message', methods=['POST'])
 @login_required
-def send_message():
+def send_message():     # Envia uma mensagem privada para outro usuário
     data = request.json
     message = PrivateMessage(
         sender_id=current_user.id,
@@ -21,7 +21,7 @@ def send_message():
     db.session.commit()
     return jsonify({'status': 'success', 'message_id': message.id})
 
-@chat_bp.route('/get_messages/<int:user_id>', methods=['GET'])
+@chat_bp.route('/get_messages/<int:user_id>', methods=['GET'])   # Recupera mensagens entre o usuário logado e o usuário alvo
 @login_required
 def get_messages(user_id):
     messages = PrivateMessage.query.filter(

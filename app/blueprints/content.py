@@ -1,4 +1,3 @@
-# app/blueprints/content.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_login import login_required, current_user
 from ..models import Content, Rating, db, Category, ContentCategory
@@ -6,13 +5,11 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 
-# ✅ Blueprint corretamente nomeado
+# Blueprint corretamente nomeado
 content_bp = Blueprint('content', __name__, url_prefix='/content')
 
 
-# ============================================================
 # LISTAR CONTEÚDOS
-# ============================================================
 @content_bp.route('/')
 def list_content():
     """Lista todo o conteúdo disponível"""
@@ -29,9 +26,9 @@ def list_content():
     )
 
 
-# ============================================================
+
 # BUSCAR CONTEÚDOS
-# ============================================================
+
 @content_bp.route('/buscar', methods=['GET'])
 @login_required
 def buscar_obra():
@@ -62,9 +59,9 @@ def buscar_obra():
     )
 
 
-# ============================================================
+
 # VISUALIZAR CONTEÚDO
-# ============================================================
+
 @content_bp.route('/<int:content_id>')
 def view_content(content_id):
     """Visualiza um conteúdo específico"""
@@ -97,9 +94,9 @@ def view_content(content_id):
     )
 
 
-# ============================================================
+
 # CRIAR CONTEÚDO
-# ============================================================
+
 @content_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create_content():
@@ -197,7 +194,7 @@ def edit_content(content_id):
         upload_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'uploads', 'thumbnails')
         os.makedirs(upload_dir, exist_ok=True)
 
-        # ✅ REMOVER CAPA ANTIGA PERMANENTEMENTE
+        # REMOVER CAPA ANTIGA PERMANENTEMENTE
         if remove_thumbnail:
             if content.thumbnail and content.thumbnail.startswith('uploads/'):
                 full_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', content.thumbnail)
@@ -209,7 +206,7 @@ def edit_content(content_id):
                         print(f"Erro ao remover capa: {e}")
             content.thumbnail = None
 
-        # ✅ NOVO UPLOAD
+        #  NOVO UPLOAD
         elif thumbnail_file and thumbnail_file.filename:
             filename = secure_filename(thumbnail_file.filename)
             unique_name = f"{uuid.uuid4().hex}_{filename}"
@@ -217,7 +214,7 @@ def edit_content(content_id):
             thumbnail_file.save(save_path)
             content.thumbnail = f"uploads/thumbnails/{unique_name}"
 
-        # ✅ APENAS MUDAR URL MANUAL
+        #  APENAS MUDAR URL MANUAL
         elif thumbnail_url:
             content.thumbnail = thumbnail_url
 
@@ -232,9 +229,7 @@ def edit_content(content_id):
 
     return render_template('content/edit.html', content=content)
 
-# ============================================================
 # DOWNLOAD
-# ============================================================
 @content_bp.route('/<int:content_id>/download')
 def download_content(content_id):
     """Permite o download do arquivo do conteúdo"""
@@ -253,9 +248,7 @@ def download_content(content_id):
     return send_file(file_full_path, as_attachment=True, download_name=os.path.basename(file_full_path))
 
 
-# ============================================================
 # AVALIAR CONTEÚDO (RATE)
-# ============================================================
 @content_bp.route('/<int:content_id>/rate', methods=['POST'])
 @login_required
 def rate_content(content_id):
@@ -276,9 +269,7 @@ def rate_content(content_id):
     return redirect(url_for('content.view_content', content_id=content_id))
 
 
-# ============================================================
 # DELETAR CONTEÚDO
-# ============================================================
 @content_bp.route('/<int:content_id>/delete', methods=['POST'])
 @login_required
 def delete_content(content_id):
@@ -309,9 +300,7 @@ def delete_content(content_id):
 
     return redirect(url_for('content.list_content'))
 
-# ============================================================
 # REMOVER AVALIAÇÃO (UNRATE)
-# ============================================================
 @content_bp.route('/remove_rating/<int:rating_id>', methods=['POST'])
 @login_required
 def remove_rating(rating_id):
