@@ -388,10 +388,10 @@ main {
 
 h2 {
     margin-bottom: 1.5rem;
-    color: var(--color-paper) !important;
+    color: var(--color-ink);
     font-weight: 700;
 }
-
+    
 .text-muted {
     color: var(--color-paper);
 }

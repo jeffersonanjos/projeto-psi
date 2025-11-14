@@ -54,7 +54,7 @@ def create_app():
     from .blueprints.chat import chat_bp
     from .blueprints.comunidade import comunidade_bp
     from .blueprints.feedbacks import feedback_bp
-    from .blueprints.content import content_bp
+    from .dashboard import dashboard_bp
 
 
    
@@ -67,6 +67,7 @@ def create_app():
     app.register_blueprint(content_bp)
     app.register_blueprint(redirects_bp)
     app.register_blueprint(comunidade_bp)
+    app.register_blueprint(dashboard_bp)
 
 
     return app
