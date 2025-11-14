@@ -22,6 +22,7 @@
   --color-accent: #FACC15;
 }
 
+
 html, body { height: 100%; }
 body {
   background: var(--color-bg);
@@ -30,26 +31,64 @@ body {
   line-height: 1.55;
 }
 
-/* Homepage backgrounds */
-body.homepage {
-  /* Option 1: soft gradient */
-  background: linear-gradient(180deg, #E0F2FE 0%, #F9FAFB 100%);
+/* Garantir que todas as páginas não tenham fundo sólido */
+body {
+  position: relative;
+  background: transparent !important;
 }
 
-body.homepage.option-image::before {
+/* Background images with smooth transition between light and dark modes - ALL PAGES */
+/* Light mode background image */
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: url('/static/img/background.jpg') center/cover no-repeat;
+  background: url('/static/img/background.png') center/cover no-repeat;
+  background-attachment: fixed;
+  z-index: -3;
+  opacity: 1;
+  transition: opacity 1.8s ease-in-out;
+  pointer-events: none;
+}
+
+/* Hide light background in dark mode */
+:root.dark body::before {
+  opacity: 0;
+}
+
+/* Dark mode background image */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('/static/img/background2.png') center/cover no-repeat;
+  background-attachment: fixed;
+  z-index: -3;
+  opacity: 0;
+  transition: opacity 1.8s ease-in-out;
+  pointer-events: none;
+}
+
+/* Show dark background when dark mode is active */
+:root.dark body::after {
+  opacity: 1;
+}
+
+/* Overlay for text contrast - applied to all pages */
+main::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 70%);
   z-index: -2;
+  pointer-events: none;
+  transition: background 1.8s ease-in-out;
 }
-body.homepage.option-image::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(15,23,42,0.45);
-  z-index: -1;
-}
+
+/* Slightly darker overlay in dark mode for better contrast */
+:root.dark main::before {
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 70%);
+} 
 
 /* Typography */
 .h1, .h2, .h3, h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; }
