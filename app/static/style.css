@@ -754,3 +754,34 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(220, 53, 69, 0.5);
 }
+
+/* Forçar títulos específicos a branco quando necessário */
+.force-white-title {
+    color: #ffffff !important;
+}
+
+.force-white-subtitle {
+    color: rgba(255,255,255,0.92) !important;
+}
+
+/* Garantir que ícones dentro das classes forçadas fiquem brancos também */
+.force-white-title i,
+.force-white-title .fas,
+.force-white-title .far,
+.force-white-title .fab,
+.force-white-subtitle i,
+.force-white-subtitle .fas {
+    color: #ffffff !important;
+}
+
+/* Regras mais específicas para sobrepor seletores locais (ex.: .dashboard-header .text-muted) */
+.dashboard-header .text-muted.force-white-subtitle,
+.dashboard-header .force-white-subtitle {
+    color: #ffffff !important;
+}
+
+/* Forçar rótulos de form-check a branco quando a classe utilitária for aplicada */
+.form-check-label.force-white-subtitle,
+.form-check .form-check-label.force-white-subtitle {
+    color: #ffffff !important;
+}

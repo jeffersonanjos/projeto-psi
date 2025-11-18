@@ -119,6 +119,14 @@ main::before {
 }
 :root.dark .app-footer { border-top-color: rgba(226,232,240,0.12); }
 
+/* Ensure footer text/icons remain visible in dark mode (force white) */
+:root.dark .app-footer,
+:root.dark .app-footer .fw-semibold,
+:root.dark .app-footer .text-muted,
+:root.dark .footer-social a {
+  color: #ffffff !important;
+}
+
 /* Cards */
 .card {
   border: none;
