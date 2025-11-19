@@ -49,8 +49,8 @@
 
 /* Caixa do modal */
 .create-post-dialog {
-  background: #ffffff;
-  color: #000000;
+    background: var(--color-surface);
+    color: var(--color-text);
   padding: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   font-family: 'Poppins', sans-serif;
@@ -70,8 +70,8 @@
   padding: 0.75rem;
   border-radius: 10px;
   border: 1px solid #d8e2ef;
-  background: #ffffff;    /* fundo branco puro */
-  color: #000000;         /* texto preto */
+    background: var(--color-surface);    /* use theme surface */
+    color: var(--color-text);         /* use theme text */
   font-family: 'Poppins', sans-serif;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -80,7 +80,7 @@
   outline: none;
   border-color: var(--color-primary-600, #0e56b3);
   box-shadow: 0 0 0 2px rgba(14, 86, 179, 0.15);
-  background: #fff;
+    background: var(--color-surface);
 }
 
 /* Botões de ação */
@@ -95,8 +95,8 @@
   outline: none;
   border-color: var(--color-primary-600, #0e56b3);
   box-shadow: 0 0 0 2px rgba(14, 86, 179, 0.15);
-  background: #ffffff; /* mantém o fundo branco no foco */
-  color: #000000;      /* mantém texto preto */
+    background: var(--color-surface); /* mantém o fundo do surface no foco */
+    color: var(--color-text);      /* mantém texto no token correto */
 }
 
 
@@ -108,7 +108,7 @@ body {
       linear-gradient(var(--bg-overlay), var(--bg-overlay)),
       url('/static/img/background.jpg') center center / cover fixed no-repeat;
     min-height: 100vh;
-    color: var(--color-ink);
+    color: var(--color-text);
     line-height: 1.6;
     display: flex;
     flex-direction: column;
@@ -212,7 +212,8 @@ main {
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.95) !important;
+    /* Use theme surface token for solid surface color in both themes */
+    background: var(--color-surface) !important;
     border: none;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(var(--shadow-rgb), 0.2);
@@ -220,7 +221,7 @@ main {
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     overflow: visible;
-    color: var(--color-ink);
+    color: var(--color-text);
 }
 
 /* Para cards com imagens que precisam de overflow hidden */
@@ -365,7 +366,7 @@ main {
 .btn-outline-primary {
     border: 2px solid var(--color-primary-500);
     color: var(--color-primary-500);
-    background: transparent;
+    background: var(--color-surface);
 }
 
 .btn-outline-primary:hover {
@@ -388,12 +389,12 @@ main {
 
 h2 {
     margin-bottom: 1.5rem;
-    color: var(--color-ink);
+    color: var(--color-text);
     font-weight: 700;
 }
     
 .text-muted {
-    color: var(--color-paper);
+    color: var(--color-muted);
 }
 
 .text-muted-white {
@@ -406,21 +407,47 @@ h2 {
     padding: 15px 20px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--color-surface);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    color: var(--color-ink);
+    color: var(--color-text);
+
+    /* Ensure input groups and search form buttons follow theme tokens so
+       the search form remains readable in dark mode */
+    .input-group .form-control {
+        background: var(--color-surface) !important;
+        color: var(--color-text) !important;
+        border: 1px solid var(--border-soft) !important;
+    }
+
+    .input-group .btn,
+    .input-group .btn-outline-secondary {
+        background: var(--color-surface) !important;
+        color: var(--color-text) !important;
+        border: 1px solid var(--border-soft) !important;
+    }
+
+    .input-group .btn:hover,
+    .input-group .btn-outline-secondary:hover {
+        background: var(--color-primary-600) !important;
+        color: #fff !important;
+    }
+
+    .form-control::placeholder {
+        color: var(--color-muted) !important;
+        opacity: 1;
+    }
 }
 
 .form-control:focus {
     border-color: var(--color-primary-500);
     box-shadow: 0 0 0 0.2rem rgba(104, 140, 79, 0.25);
-    background: var(--color-paper);
+    background: var(--color-surface);
 }
 
 .form-label {
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--color-text);
     margin-bottom: 8px;
 }
 
@@ -428,6 +455,11 @@ h2 {
     font-weight: 600;
     color: var(--color-paper);
     margin-bottom: 8px;
+}
+
+/* Dark mode: make sure white labels remain readable (color-paper becomes surface in dark) */
+:root.dark .form-label-white {
+    color: var(--color-text) !important;
 }
 
 .jumbotron {
@@ -481,32 +513,24 @@ h2 {
     border-left: 5px solid;
 }
 
-.alert-success {
-    background: #ffffff;
-    border-left-color: #17a2b8;
-    color: #0c5460;
-}
-
-.alert-danger {
-    background: #ffffff;
-    border-left-color: #dc3545;
-    color: #721c24;
-}
-
-.alert-warning {
-    background: #ffffff;
-    border-left-color: #ffc107;
-    color: #856404;
-}
-
+.alert-success,
+.alert-danger,
+.alert-warning,
 .alert-info {
-    background: #ffffff;
-    border-left-color: #17a2b8;
-    color: #0c5460;
+    /* Use surface token to ensure alerts follow theme surfaces and
+       maintain contrast in dark mode. Specific border-left colors
+       are preserved via individual rules below. */
+    background: var(--color-surface);
+    color: var(--color-text);
 }
+
+.alert-success { border-left-color: #17a2b8; }
+.alert-danger { border-left-color: #dc3545; }
+.alert-warning { border-left-color: #ffc107; }
+.alert-info { border-left-color: #17a2b8; }
 
 .list-group-item {
-    background: rgba(255, 255, 255, 0.9) !important;
+    background: var(--color-surface) !important;
     border: 1px solid var(--border-soft);
     border-radius: 10px !important;
     margin-bottom: 10px;
@@ -516,14 +540,15 @@ h2 {
 }
 
 .list-group-item:hover {
-    background: rgba(104, 140, 79, 0.1) !important;
+    /* subtle overlay on top of surface — use small tint to keep contrast */
+    background: linear-gradient(rgba(104, 140, 79, 0.04), rgba(104, 140, 79, 0.04));
     transform: translateX(10px);
     box-shadow: 0 5px 15px rgba(var(--shadow-rgb), 0.1);
 }
 
 .list-group-item-action {
     text-decoration: none;
-    color: var(--color-ink);
+    color: var(--color-text);
 }
 
 .list-group-item-action:hover {
@@ -574,7 +599,7 @@ footer .col-md-6 {
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
-    color: var(--color-ink);
+    color: var(--color-text);
     margin-bottom: 1rem;
 }
 
@@ -704,7 +729,7 @@ h1, h2, h3, h4, h5, h6 {
 .obra-play-icon {
     width: 80px;
     height: 80px;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-surface);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -714,7 +739,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .obra-thumbnail-container:hover .obra-play-icon {
-    background: rgba(255, 255, 255, 1);
+    background: var(--color-surface);
     transform: scale(1.15);
 }
 
@@ -733,7 +758,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-danger:hover {
-    background: white !important;
+    background: var(--color-surface) !important;
     color: #dc3545 !important;
     border: 2px solid #dc3545 !important;
     transform: translateY(-2px);
@@ -748,7 +773,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-outline-danger:hover {
-    background: white !important;
+    background: var(--color-surface) !important;
     color: #dc3545 !important;
     border: 2px solid #dc3545 !important;
     transform: translateY(-2px);
@@ -780,8 +805,227 @@ h1, h2, h3, h4, h5, h6 {
     color: #ffffff !important;
 }
 
-/* Forçar rótulos de form-check a branco quando a classe utilitária for aplicada */
+/* Forçar rótu  los de form-check a branco quando a classe utilitária for aplicada */
 .form-check-label.force-white-subtitle,
 .form-check .form-check-label.force-white-subtitle {
     color: #ffffff !important;
+}
+
+/* ===== Página: Comunidade / Posts - ajustes de layout e botão ciano ===== */
+:root {
+    --color-ciano-700: #0b7285;
+    --color-ciano-600: #0891b2;
+    --color-ciano-500: #06b6d4;
+}
+
+/* Theme toggle icons: show sun in light, moon in dark by default (prevents flicker) */
+#themeToggle [data-icon="moon"] { display: none; }
+#themeToggle [data-icon="sun"] { display: inline-block; }
+:root.dark #themeToggle [data-icon="moon"] { display: inline-block; }
+:root.dark #themeToggle [data-icon="sun"] { display: none; }
+
+/* Centraliza e organiza a lista de cards na página de posts/comunidade */
+.grid-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: stretch;
+    padding: 0 0.5rem 1rem 0.5rem;
+}
+
+/* When grid-cards contains Bootstrap column children, let columns control widths.
+   Keep legacy anchor handling but allow card columns to expand naturally. */
+.grid-cards a {
+    width: 100%;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Ajustes visuais para .post-card (aplicável a cards já marcados com a classe) */
+.post-card {
+    max-width: 760px;
+    margin: 0.75rem auto;
+    padding: 1.15rem 1.25rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(var(--shadow-rgb), 0.09);
+    border: 1px solid var(--border-soft);
+    background: var(--color-surface) !important;
+    color: var(--color-text);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(6,6,6,0.12);
+}
+
+/* Posiciona o cabeçalho da comunidade alinhado e com largura controlada */
+.community-header {
+    max-width: 760px;
+    margin: 1.5rem auto;
+    padding: 1.25rem 1.25rem;
+    border-radius: 14px;
+    background: var(--color-surface) !important;
+    color: var(--color-text);
+    box-shadow: 0 8px 24px rgba(var(--shadow-rgb), 0.08);
+}
+
+/* Estiliza o botão de criação para tom ciano, sem tocar em .btn-primary globalmente */
+.btn-create-post {
+    background: linear-gradient(135deg, var(--color-ciano-600), var(--color-ciano-500));
+    color: #fff !important;
+    border: none;
+    box-shadow: 0 8px 20px rgba(6,182,212,0.16);
+}
+
+.btn-create-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(6,182,212,0.22);
+}
+
+/* Curtir / comentar: micro-estilização ciano para destaques na ação */
+.post-actions .like-btn,
+.post-actions .comment-btn {
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.9rem;
+}
+
+.post-actions .like-btn {
+    border: 1px solid var(--color-ciano-500);
+    color: var(--color-ciano-600);
+    background: var(--color-surface);
+}
+
+.post-actions .like-btn.liked {
+    background: var(--color-ciano-500);
+    color: #fff;
+    border: none;
+}
+
+.post-actions .comment-btn {
+    background: var(--color-ciano-500);
+    color: #fff;
+    border: none;
+}
+
+/* Campo de comentário arredondado e espaçamento coerente */
+.comment-input {
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+}
+
+/* Corrige alinhamento e comportamento dos botões de ação (curtir/comentar/excluir)
+   usando seletores específicos para não afetar botões globais como
+   `.btn-outline-secondary` (Sair) ou `.btn-create-post` (Criar Post). */
+.post-actions {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    margin-top: 0.6rem;
+}
+
+.post-actions .like-btn,
+.post-actions .comment-btn,
+.post-actions .delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    text-transform: none; /* garantir que o texto não vire maiúsculas */
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.36rem 0.82rem;
+    font-size: 0.95rem;
+    min-height: 36px;
+    border-radius: 999px;
+}
+
+/* Specific spacing for post-level delete button placed next to comment action */
+.post-actions .delete-post-btn {
+    margin-left: 0.25rem;
+    padding: 0.28rem 0.5rem;
+}
+
+/* Ícones dentro dos botões de ação: remover margens conflitantes */
+.post-actions .like-btn i,
+.post-actions .comment-btn i,
+.post-actions .delete-btn i {
+    margin: 0;
+}
+
+/* Estilo neutro para botões de exclusão (ícone pequeno) */
+.delete-btn {
+    background: var(--color-surface);
+    border: none;
+    color: var(--color-text);
+    padding: 0.28rem;
+    border-radius: 6px;
+}
+.delete-btn i {
+    font-size: 1rem;
+}
+
+/* Forçar o formulário de comentário a ficar em linha com espaçamento adequado */
+.comment-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.comment-input {
+    flex: 1 1 auto;
+    min-height: 36px;
+}
+
+@media (max-width: 768px) {
+    .community-header {
+        margin-top: 1rem;
+        padding: 1rem;
+    }
+    .post-card {
+        padding: 1rem;
+    }
+    .grid-cards a { max-width: 100%; }
+}
+
+/* fim: ajustes da página comunidade/posts */
+
+/* === Comentários: layout e contraste === */
+.comment-author {
+    font-weight: 600;
+    display: inline-block;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    color: var(--color-text);
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.comment-header > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.comment-date {
+    color: var(--color-muted, rgba(30,26,22,0.6));
+    font-size: 0.9rem;
+    margin-left: 0.4rem;
+}
+.comment-text {
+    margin-top: 0.5rem;
+}
+
+/* Garantir contraste do texto em modo escuro quando o fundo do card for claro */
+:root.dark .card {
+    color: var(--color-text) !important;
 }

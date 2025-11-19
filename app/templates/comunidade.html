@@ -3,354 +3,7 @@
 {% block title %}{{ comunidade.name }} - MemóriaViva{% endblock %}
 
 {% block extra_css %}
-<style>
-    .community-container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-    
-    .community-header {
-        background: var(--color-surface, #fff);
-        border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    
-    .community-header-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-    
-    .community-header-title-section {
-        flex: 1;
-        min-width: 0;
-        margin-right: 24px;
-    }
-    
-    .community-header h2 {
-        color: var(--color-text, #0F172A);
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-    }
-    
-    .dark .community-header h2 {
-        color: var(--color-text, #E2E8F0);
-    }
-    
-    .community-header .description {
-        color: var(--color-text, #6B7280);
-        margin-top: 0.5rem;
-        font-size: 1rem;
-    }
-    
-    .community-header-buttons {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        flex-shrink: 0;
-    }
-    
-    .post-card {
-        background: var(--color-surface, #fff);
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .post-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    }
-    
-    .post-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-        position: relative;
-    }
-    
-    .post-header .delete-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        flex-shrink: 0;
-    }
-    
-    .post-content {
-        color: var(--color-text, #0F172A);
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-    
-    .post-meta {
-        color: var(--color-text, #6B7280);
-        font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .post-actions {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        justify-content: flex-start;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(0,0,0,0.08);
-        flex-wrap: nowrap;
-    }
-    
-    .like-form {
-        display: flex;
-        margin: 0;
-        flex-shrink: 0;
-    }
-    
-    .like-btn {
-        background: transparent;
-        border: 1px solid var(--color-primary, #2563EB);
-        color: var(--color-primary, #2563EB);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.875rem;
-        transition: all 0.2s;
-        cursor: pointer;
-    }
-    
-    .like-btn:hover {
-        background: var(--color-primary, #2563EB);
-        color: #fff;
-    }
-    
-    .like-btn.liked {
-        background: var(--color-primary, #2563EB);
-        color: #fff;
-    }
-    
-    .comment-form {
-        display: flex;
-        gap: 0.5rem;
-        flex: 1;
-        min-width: 200px;
-        max-width: 100%;
-        align-items: center;
-    }
-    
-    .comment-input {
-        flex: 1;
-        border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 20px;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        background: var(--color-bg, #F9FAFB);
-        color: var(--color-text, #0F172A);
-        height: auto;
-        line-height: 1.5;
-    }
-    
-    .comment-input:focus {
-        outline: none;
-        border-color: var(--color-primary, #2563EB);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    
-    .comment-btn {
-        background: var(--color-primary, #2563EB);
-        color: #fff;
-        border: none;
-        padding: 0.5rem 1.25rem;
-        border-radius: 20px;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        white-space: nowrap;
-        height: fit-content;
-    }
-    
-    .comment-btn:hover {
-        background: var(--color-secondary, #60A5FA);
-        transform: translateY(-1px);
-    }
-    
-    .post-stats {
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 0.75rem;
-        padding-top: 0.5rem;
-        font-size: 0.875rem;
-        color: var(--color-text, #6B7280);
-        align-items: center;
-    }
-    
-    .comments-section {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .comment-item {
-        background: var(--color-bg, #F9FAFB);
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .comment-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 0.5rem;
-    }
-    
-    .comment-author {
-        font-weight: 600;
-        color: var(--color-text, #0F172A);
-        font-size: 0.875rem;
-    }
-    
-    .comment-date {
-        color: var(--color-text, #6B7280);
-        font-size: 0.75rem;
-        margin-left: 0.5rem;
-    }
-    
-    .comment-text {
-        color: var(--color-text, #0F172A);
-        font-size: 0.875rem;
-        line-height: 1.5;
-    }
-    
-    .delete-btn {
-        background: transparent;
-        border: 1px solid #EF4444;
-        color: #EF4444;
-        padding: 0.25rem 0.5rem;
-        border-radius: 8px;
-        font-size: 0.75rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .delete-btn:hover {
-        background: #EF4444;
-        color: #fff;
-    }
-    
-    .btn-create-post {
-        background: linear-gradient(135deg, #4E73DF 0%, #5a7fe8 100%);
-        color: #fff;
-        border: none;
-        height: 40px;
-        padding: 0 1.25rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 2px 8px rgba(78, 115, 223, 0.3);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-    }
-    
-    .btn-create-post:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(78, 115, 223, 0.4);
-    }
-    
-    .btn-sair {
-        background: transparent;
-        border: 1px solid rgba(0,0,0,0.1);
-        color: var(--color-text, #0F172A);
-        height: 40px;
-        padding: 0 1rem;
-        border-radius: 12px;
-        font-size: 0.875rem;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        text-decoration: none;
-    }
-    
-    .btn-sair:hover {
-        background: var(--color-bg, #F9FAFB);
-        border-color: rgba(0,0,0,0.2);
-        text-decoration: none;
-    }
-    
-    /* Dark mode */
-    .dark .post-card,
-    .dark .community-header {
-        background: var(--color-surface, #1E293B);
-        border-color: rgba(255,255,255,0.1);
-    }
-    
-    .dark .post-actions {
-        border-top-color: rgba(255,255,255,0.1);
-    }
-    
-    .dark .comment-item {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.1);
-    }
-    
-    .dark .comment-input {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.1);
-        color: var(--color-text, #E2E8F0);
-    }
-    
-    .dark .btn-sair {
-        border-color: rgba(255,255,255,0.2);
-        color: var(--color-text, #E2E8F0);
-    }
-    
-    .dark .btn-sair:hover {
-        background: rgba(255,255,255,0.1);
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-        .community-container {
-            padding: 1rem 0.5rem;
-        }
-        
-        .post-actions {
-            flex-wrap: wrap;
-        }
-        
-        .comment-form {
-            min-width: 100%;
-            margin-top: 0.5rem;
-        }
-        
-        .like-form {
-            width: 100%;
-        }
-        
-        .like-form .like-btn {
-            width: 100%;
-        }
-    }
-</style>
+<!-- Page uses global community/post styles in app/static/style.css -->
 {% endblock %}
 
 {% block content %}
@@ -363,10 +16,10 @@
                 <p class="description mb-0">{{ comunidade.description or 'Sem descrição.' }}</p>
             </div>
             <div class="community-header-buttons">
-                <a href="{{ url_for('comunidade.comunidade') }}" class="btn-sair">
+                <a href="{{ url_for('comunidade.comunidade') }}" class="btn btn-outline-secondary btn-sair me-2">
                     <i class="bi bi-arrow-left me-1"></i>Sair
                 </a>
-                <button id="createPostButton" class="btn-create-post">
+                <button id="createPostButton" class="btn btn-create-post">
                     <i class="bi bi-plus-circle me-2"></i>Criar Post
                 </button>
             </div>
@@ -385,17 +38,9 @@
                             <i class="bi bi-person-circle"></i>
                             <span>Postado por <strong>{{ msg.usuario.nome }}</strong></span>
                             <span>•</span>
-                            <span>{{ msg.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+                            <span>{{ msg.created_at|format_datetime('%d/%m/%Y %H:%M') }}</span>
                         </div>
                     </div>
-                    {% if current_user.is_authenticated and (current_user.id == msg.author_id or current_user.is_admin or current_user.id == comunidade.owner_id) %}
-                    <button class="delete-btn delete-post-btn"
-                        data-community-id="{{ comunidade.id }}"
-                        data-post-id="{{ msg.id }}"
-                        title="Excluir post">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    {% endif %}
                 </div>
 
                 <div class="post-actions">
@@ -409,6 +54,14 @@
                         <input type="text" name="text" class="comment-input" placeholder="Adicionar comentário..." required>
                         <button type="submit" class="comment-btn">Comentar</button>
                     </form>
+                    {% if current_user.is_authenticated and (current_user.id == msg.author_id or current_user.is_admin or current_user.id == comunidade.owner_id) %}
+                    <button class="delete-btn delete-post-btn"
+                        data-community-id="{{ comunidade.id }}"
+                        data-post-id="{{ msg.id }}"
+                        title="Excluir post">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    {% endif %}
                 </div>
 
                 <div class="post-stats">
@@ -428,7 +81,7 @@
                         <div class="comment-header">
                             <div>
                                 <span class="comment-author">{{ c.user.nome }}</span>
-                                <span class="comment-date">{{ c.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+                                <span class="comment-date">{{ c.created_at|format_datetime('%d/%m/%Y %H:%M') }}</span>
                             </div>
                             {% if current_user.is_authenticated and (current_user.id == c.user_id or current_user.is_admin or current_user.id == comunidade.owner_id) %}
                             <button class="delete-btn delete-comment-btn" 
@@ -669,12 +322,35 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Adicionar comentário na lista
                             const commentsSection = document.querySelector(`.comments[data-post-id="${postId}"]`);
                             if (commentsSection && data.comment) {
+                                const createdAt = (function(){
+                                    try {
+                                        // prefer epoch ms if available (reliable across browsers)
+                                        if (data.comment.created_at_ts) {
+                                            const d = new Date(Number(data.comment.created_at_ts));
+                                            const date = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                            const time = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                                            return `${date} ${time}`;
+                                        }
+                                        // fallback to ISO if present
+                                        const iso = data.comment.created_at_iso || data.comment.created_at;
+                                        if (typeof iso === 'string' && iso.indexOf('T') !== -1) {
+                                            const d = new Date(iso);
+                                            if (!isNaN(d)) {
+                                                const date = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                                                const time = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                                                return `${date} ${time}`;
+                                            }
+                                        }
+                                        return iso;
+                                    } catch (e) { return data.comment.created_at; }
+                                })();
+
                                 const commentHtml = `
                                     <div class="comment-item" data-comment-id="${data.comment.id}">
                                         <div class="comment-header">
                                             <div>
                                                 <span class="comment-author">${escapeHtml(data.comment.author)}</span>
-                                                <span class="comment-date">${escapeHtml(data.comment.created_at)}</span>
+                                                <span class="comment-date">${escapeHtml(createdAt)}</span>
                                             </div>
                                             <button class="delete-btn delete-comment-btn" 
                                                 data-comment-id="${data.comment.id}"
@@ -716,6 +392,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+    
+    // Helper to format ISO timestamps into local pt-BR date/time string
+    function formatIsoToLocal(isoOrString) {
+        if (!isoOrString) return '';
+        try {
+            if (typeof isoOrString === 'string' && isoOrString.indexOf('T') !== -1) {
+                const d = new Date(isoOrString);
+                if (isNaN(d)) return isoOrString;
+                const date = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const time = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                return `${date} ${time}`;
+            }
+            return isoOrString;
+        } catch (e) {
+            return isoOrString;
+        }
     }
     
     setupCommentForms();

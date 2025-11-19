@@ -13,12 +13,13 @@
     const moon = document.querySelector('#themeToggle [data-icon="moon"]');
     const sun = document.querySelector('#themeToggle [data-icon="sun"]');
     if (!moon || !sun) return;
+    // Show moon icon when dark mode is active, and sun icon when light mode is active.
     if (isDark) {
-      moon.classList.add('d-none');
-      sun.classList.remove('d-none');
-    } else {
-      sun.classList.add('d-none');
       moon.classList.remove('d-none');
+      sun.classList.add('d-none');
+    } else {
+      sun.classList.remove('d-none');
+      moon.classList.add('d-none');
     }
   }
   function initThemeFromStorage() {

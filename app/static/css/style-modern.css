@@ -13,32 +13,58 @@
   --transition-fast: 180ms ease;
 }
 
+/* THEME DARK */
 :root.dark {
   --color-bg: #0F172A;
   --color-text: #E2E8F0;
   --color-surface: #1E293B;
-  --color-primary: #3B82F6; /* lighter primary for dark */
+  --color-primary: #3B82F6;
   --color-secondary: #60A5FA;
   --color-accent: #FACC15;
 }
 
+/* Map variables (fixes legacy compatibility) */
+:root {
+  --color-ink: var(--color-text);
+  --color-paper: var(--color-surface);
+  --color-bg-soft: var(--color-bg);
+  --border-soft: rgba(2,6,23,0.06);
+  --color-muted: rgba(15,23,42,0.6);
+}
 
+:root.dark {
+  --color-ink: var(--color-text);
+  --color-paper: var(--color-surface);
+  --color-bg-soft: var(--color-bg);
+  --border-soft: rgba(226,232,240,0.08);
+  --color-muted: rgba(226,232,240,0.72);
+  --bg-overlay: rgba(0,0,0,0.55);
+}
+
+/* Ensure common subtext classes follow the muted token in dark mode
+   so they don't stay forced white by other specific selectors. */
+:root.dark .text-muted,
+:root.dark .comment-date,
+:root.dark .post-meta,
+:root.dark .post-meta span,
+:root.dark .card small,
+:root.dark .muted {
+  color: var(--color-muted) !important;
+}
+
+/* GLOBAL */
 html, body { height: 100%; }
+
+/*** FIX CRÍTICO — remove bug do fundo transparente ***/
 body {
-  background: var(--color-bg);
+  background: var(--color-bg) !important;
   color: var(--color-text);
   font-family: 'Poppins', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   line-height: 1.55;
-}
-
-/* Garantir que todas as páginas não tenham fundo sólido */
-body {
   position: relative;
-  background: transparent !important;
 }
 
-/* Background images with smooth transition between light and dark modes - ALL PAGES */
-/* Light mode background image */
+/* Background images light/dark */
 body::before {
   content: "";
   position: fixed;
@@ -51,12 +77,11 @@ body::before {
   pointer-events: none;
 }
 
-/* Hide light background in dark mode */
 :root.dark body::before {
   opacity: 0;
 }
 
-/* Dark mode background image */
+/* Dark background */
 body::after {
   content: "";
   position: fixed;
@@ -66,32 +91,41 @@ body::after {
   z-index: -3;
   opacity: 0;
   transition: opacity 1.8s ease-in-out;
-  pointer-events: none;
 }
 
-/* Show dark background when dark mode is active */
 :root.dark body::after {
   opacity: 1;
 }
 
-/* Overlay for text contrast - applied to all pages */
+/* Overlay suavizado — não escurece demais o conteúdo */
 main::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 70%);
+  background: radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,0.10) 0%,
+      rgba(0,0,0,0.25) 70%
+  );
   z-index: -2;
   pointer-events: none;
   transition: background 1.8s ease-in-out;
 }
 
-/* Slightly darker overlay in dark mode for better contrast */
 :root.dark main::before {
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 70%);
-} 
+  background: radial-gradient(
+      ellipse at center,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.45) 70%
+  );
+}
 
 /* Typography */
-.h1, .h2, .h3, h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; }
+.h1, .h2, .h3, h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
 .lead { color: rgba(15,23,42,0.8); }
 :root.dark .lead { color: rgba(226,232,240,0.85); }
 
@@ -99,10 +133,32 @@ main::before {
 .navbar {
   backdrop-filter: saturate(180%) blur(8px);
 }
-.navbar.navbar-fixed { position: sticky; top: 0; z-index: 1030; }
-.navbar-brand { font-weight: 700; letter-spacing: -0.01em; }
-.navbar .nav-link { transition: color var(--transition-fast); }
-.navbar .nav-link:hover { color: var(--color-secondary) !important; }
+
+/* Theme toggle icons: show sun in light, moon in dark by default (prevents flicker)
+   This ensures the icon matches the `:root.dark` class applied early in the document head. */
+#themeToggle [data-icon="moon"] { display: none; }
+#themeToggle [data-icon="sun"] { display: inline-block; }
+:root.dark #themeToggle [data-icon="moon"] { display: inline-block; }
+:root.dark #themeToggle [data-icon="sun"] { display: none; }
+
+.navbar.navbar-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.navbar .nav-link {
+  transition: color var(--transition-fast);
+}
+
+.navbar .nav-link:hover {
+  color: var(--color-secondary) !important;
+}
 
 /* Footer */
 .app-footer {
@@ -110,17 +166,13 @@ main::before {
   border-top: 1px solid rgba(2,6,23,0.06);
   color: var(--color-text);
 }
-.app-footer .fw-semibold {
-  color: var(--color-text) !important;
-}
-.app-footer .text-muted {
-  color: var(--color-text) !important;
-  opacity: 0.7;
-}
-:root.dark .app-footer { border-top-color: rgba(226,232,240,0.12); }
 
-/* Ensure footer text/icons remain visible in dark mode (force white) */
-:root.dark .app-footer,
+:root.dark .app-footer {
+  border-top-color: rgba(226,232,240,0.12);
+  color: #ffffff !important;
+}
+
+/* Fix footer links no dark */
 :root.dark .app-footer .fw-semibold,
 :root.dark .app-footer .text-muted,
 :root.dark .footer-social a {
@@ -132,22 +184,54 @@ main::before {
   border: none;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  background: var(--color-surface);
+  background: var(--color-surface) !important;
 }
+
+/*** Fix — cartões mais sólidos no modo escuro ***/
+:root.dark .card {
+  background: #1E293B !important;
+}
+
 .card .card-header {
   background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   color: #fff;
   border: none;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-.card:hover { box-shadow: var(--shadow-md); transition: box-shadow var(--transition-fast); }
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-fast);
+}
 
 /* Buttons */
-.btn { border-radius: var(--radius-sm); transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast); }
-.btn-primary { background: var(--color-primary); border-color: var(--color-primary); }
-.btn-primary:hover { background: #1D4ED8; border-color: #1D4ED8; box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35); transform: translateY(-1px); }
-.btn-outline-primary { color: var(--color-primary); border-color: var(--color-primary); }
-.btn-outline-primary:hover { background: var(--color-primary); color: #fff; }
+.btn {
+  border-radius: var(--radius-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background: #1D4ED8;
+  border-color: #1D4ED8;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline-primary:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
 .btn-success { background: #10B981; border-color: #10B981; }
 .btn-info { background: #06B6D4; border-color: #06B6D4; }
 
@@ -158,9 +242,15 @@ main::before {
   background: var(--color-surface);
   color: var(--color-text);
 }
+
 .form-control:focus, .form-select:focus {
   border-color: var(--color-secondary);
   box-shadow: 0 0 0 0.25rem rgba(96, 165, 250, 0.25);
+}
+
+/* Ensure labels that were intended to be white remain readable in dark mode */
+:root.dark .form-label-white {
+  color: var(--color-text) !important;
 }
 
 /* Lists */
@@ -169,36 +259,93 @@ main::before {
   border-radius: var(--radius-sm) !important;
   margin-bottom: 10px;
   box-shadow: var(--shadow-sm);
+  background: var(--color-surface);
 }
 
-/* Shadows and transitions */
-.hover-raise { transition: transform var(--transition-fast), box-shadow var(--transition-fast); }
-.hover-raise:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+:root.dark .list-group-item {
+  background: #1E293B;
+}
 
-/* Spinner overlay */
+/* Hover effects */
+.hover-raise {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hover-raise:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Spinner */
 #globalLoader {
-  position: fixed; inset: 0; display: none; align-items: center; justify-content: center; backdrop-filter: blur(2px);
-  background: rgba(15,23,42,0.06); z-index: 2000;
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+  background: rgba(15,23,42,0.06);
+  z-index: 2000;
 }
-#globalLoader .spinner-border { width: 3rem; height: 3rem; color: var(--color-primary); }
+
+#globalLoader .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: var(--color-primary);
+}
+
 #globalLoader.show { display: flex; }
 
-/* Grid cards for communities/posts */
+/* Grid */
 .grid-cards {
-  display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem;
+  /* Allow grid-cards to work with either CSS Grid (legacy) or Bootstrap column children.
+     Prefer a flexible layout so templates can use Bootstrap `row` + `col-*`. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: stretch;
 }
-@media (min-width: 576px) { .grid-cards { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 992px) { .grid-cards { grid-template-columns: repeat(3, 1fr); } }
 
-/* Utility badges */
-.badge-filtered { background: var(--color-accent); color: #1F2937; }
+/* If a page relies on grid layout, provide an explicit helper class `.grid-cards-grid`.
+   This preserves the original grid behavior for other templates. */
+.grid-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
 
-/* Minimal footer social icons */
-.footer-social a { color: inherit; opacity: 0.8; margin-left: .75rem; }
-.footer-social a:hover { opacity: 1; color: var(--color-primary); }
+@media (min-width: 576px) { .grid-cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px) { .grid-cards-grid { grid-template-columns: repeat(3, 1fr); } }
 
-/* Fix default jumbotron */
-.jumbotron { background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+/* Badges */
+.badge-filtered {
+  background: var(--color-accent);
+  color: #1F2937;
+}
 
-/* AOS helper: reduce motion preference */
-@media (prefers-reduced-motion: reduce) { [data-aos] { transition: none !important; animation: none !important; } }
+/* Footer icons */
+.footer-social a {
+  color: inherit;
+  opacity: 0.8;
+  margin-left: .75rem;
+}
+
+.footer-social a:hover {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+/* Jumbotron */
+.jumbotron {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+/* AOS */
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    transition: none !important;
+    animation: none !important;
+  }
+}

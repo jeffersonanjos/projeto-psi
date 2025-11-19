@@ -139,7 +139,9 @@ def comment_post(community_id, post_id):
             'id': comment.id,
             'author': current_user.nome,
             'text': comment.text,
-            'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M')
+            'created_at': comment.created_at.strftime('%d/%m/%Y %H:%M'),
+            'created_at_iso': comment.created_at.isoformat(),
+            'created_at_ts': int(comment.created_at.timestamp() * 1000)
         }
     })
 

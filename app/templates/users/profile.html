@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <hr>
                             
                             <div class="mb-3">
-                                <strong>Membro desde:</strong> {{ usuario.criado_em.strftime('%d de %B de %Y') }}
+                                <strong>Membro desde:</strong> {{ usuario.criado_em|format_datetime('%d de %B de %Y') }}
                             </div>
                             
                             {% if usuario.biografia %}
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <div class="d-flex align-items-center">
                                                 <small class="text-muted">
                                                     <i class="fas fa-clock me-1"></i>
-                                                    {{ activity.date.strftime('%d/%m/%Y às %H:%M') }}
+                                                    {{ activity.date|format_datetime('%d/%m/%Y às %H:%M') }}
                                                 </small>
                                             </div>
                                         </div>

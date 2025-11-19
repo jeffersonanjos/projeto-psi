@@ -18,10 +18,27 @@
       position: relative;
       z-index: 1;
       overflow: visible !important;
+      margin-left: -0.5rem;
+      margin-right: -0.5rem;
     }
 
     .card {
       overflow: visible !important;
+    }
+    /* Forçar altura consistente nos cards e alinhar ações ao final */
+    .grid-cards .card {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+    .grid-cards .card .card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+    /* garantir que a área de ações fique na parte inferior do card */
+    .grid-cards .card .card-body > .mt-3 {
+      margin-top: auto;
     }
   </style>
 
@@ -50,9 +67,9 @@
       </div>
 
       {% if comunidades %}
-      <div class="grid-cards">
+      <div class="row grid-cards gx-4 gy-4">
         {% for comunidade in comunidades %}
-        <div data-aos="fade-up" data-aos-delay="{{ loop.index0 * 50 }}">
+        <div class="col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 50 }}">
           <div class="card h-100 hover-raise">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start mb-2">
@@ -137,7 +154,7 @@
               </div>
 
               <small class="text-muted">
-                Criada por {{ comunidade.owner.nome }} em {{ comunidade.created_at.strftime('%d/%m/%Y') }}
+                Criada por {{ comunidade.owner.nome }} em {{ comunidade.created_at|format_datetime('%d/%m/%Y') }}
               </small>
 
               <div class="mt-3">

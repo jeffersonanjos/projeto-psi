@@ -44,6 +44,33 @@ def create_app():
     login_manager.init_app(app)
     bcrypt.init_app(app)
 
+    # Jinja helpers
+    # Tentamos importar os helpers (se existirem e forem compatíveis com a versão do Python).
+    # Se a importação falhar (ex.: sintaxe não suportada no ambiente), registramos
+    # um fallback simples para evitar que templates falhem por falta do filtro.
+    try:
+        from .utils.helpers import format_datetime, format_date
+    except Exception:
+        def format_datetime(dt, format_str: str = '%d/%m/%Y %H:%M'):
+            if not dt:
+                return ''
+            try:
+                return dt.strftime(format_str)
+            except Exception:
+                return str(dt)
+
+        def format_date(date_obj, format_str: str = '%d/%m/%Y'):
+            if not date_obj:
+                return ''
+            try:
+                return date_obj.strftime(format_str)
+            except Exception:
+                return str(date_obj)
+
+    # Registrar os filtros — agora garantido que existam
+    app.jinja_env.filters['format_datetime'] = format_datetime
+    app.jinja_env.filters['format_date'] = format_date
+
     # blueprints
     from .blueprints.main import main_bp
     from .blueprints.auth import auth_bp

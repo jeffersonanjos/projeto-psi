@@ -417,7 +417,7 @@
                                         </td>
                                         <td>
                                             <small class="text-muted">
-                                                {{ item.created_at.strftime('%d/%m/%Y %H:%M') if item.created_at else 'N/A' }}
+                                                {{ item.created_at|format_datetime('%d/%m/%Y %H:%M') if item.created_at else 'N/A' }}
                                             </small>
                                         </td>
                                     </tr>
