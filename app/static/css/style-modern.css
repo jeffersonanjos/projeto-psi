@@ -64,11 +64,14 @@ body {
   position: relative;
 }
 
-/* Background images light/dark */
+/* Background images light/dark - Light mode shows background.png */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: url('/static/img/background.png') center/cover no-repeat;
   background-attachment: fixed;
   z-index: -3;
@@ -77,31 +80,46 @@ body::before {
   pointer-events: none;
 }
 
+/* Hide light background in dark mode */
 :root.dark body::before {
-  opacity: 0;
+  opacity: 0 !important;
 }
 
-/* Dark background */
+/* Dark background - Dark mode shows background2.png */
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: url('/static/img/background2.png') center/cover no-repeat;
   background-attachment: fixed;
   z-index: -3;
   opacity: 0;
   transition: opacity 1.8s ease-in-out;
+  pointer-events: none;
 }
 
+/* Show dark background in dark mode */
 :root.dark body::after {
-  opacity: 1;
+  opacity: 1 !important;
+}
+
+/* Ensure body background doesn't interfere */
+body {
+  background: var(--color-bg) !important;
+  background-image: none !important;
 }
 
 /* Overlay suavizado — não escurece demais o conteúdo */
 main::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: radial-gradient(
       ellipse at center,
       rgba(0,0,0,0.10) 0%,
@@ -243,9 +261,27 @@ main::before {
   color: var(--color-text);
 }
 
+:root.dark .form-control, 
+:root.dark .form-select {
+  border-color: rgba(226,232,240,0.12);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.form-control::placeholder {
+  color: var(--color-muted, rgba(15,23,42,0.6));
+  opacity: 1;
+}
+
+:root.dark .form-control::placeholder {
+  color: var(--color-muted, rgba(226,232,240,0.72)) !important;
+}
+
 .form-control:focus, .form-select:focus {
   border-color: var(--color-secondary);
   box-shadow: 0 0 0 0.25rem rgba(96, 165, 250, 0.25);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
 /* Ensure labels that were intended to be white remain readable in dark mode */

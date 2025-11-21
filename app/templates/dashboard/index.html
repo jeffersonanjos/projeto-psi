@@ -22,28 +22,36 @@
     }
     
     .dashboard-header h1 {
-        color: var(--color-text, #0F172A);
+        color: var(--color-text, #0F172A) !important;
     }
     
     .dashboard-header h1 i {
-        color: var(--color-text, #0F172A);
+        color: var(--color-text, #0F172A) !important;
     }
     
     .dashboard-header .text-muted {
-        color: var(--color-text, #6B7280) !important;
-        opacity: 0.8;
+        color: rgba(15, 23, 42, 0.7) !important;
     }
     
-    .dark .dashboard-header h1 {
-        color: var(--color-text, #E2E8F0);
+    :root.dark .dashboard-header h1 {
+        color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .dashboard-header h1 i {
-        color: var(--color-text, #E2E8F0);
+    :root.dark .dashboard-header h1 i {
+        color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .dashboard-header .text-muted {
-        color: rgba(226, 232, 240, 0.7) !important;
+    :root.dark .dashboard-header .text-muted {
+        color: rgba(226, 232, 240, 0.8) !important;
+    }
+    
+    /* Override force-white classes in dark mode for dashboard */
+    :root.dark .dashboard-header .force-white-title {
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    :root.dark .dashboard-header .force-white-subtitle {
+        color: rgba(226, 232, 240, 0.8) !important;
     }
     
     /* Stat Cards */
@@ -179,6 +187,13 @@
         font-size: 0.75rem;
         letter-spacing: 0.5px;
         padding: 1rem 1.5rem;
+        background: transparent !important;
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    :root.dark .table-card .table thead th {
+        border-bottom-color: rgba(226,232,240,0.15) !important;
+        color: var(--color-text, #E2E8F0) !important;
     }
     
     .table-card .table tbody td {
@@ -235,36 +250,100 @@
     }
     
     /* Dark mode support */
-    .dark .chart-card,
-    .dark .table-card {
-        background: var(--color-surface);
-        color: var(--color-text);
-    }
-    
-    .dark .chart-card .card-header,
-    .dark .table-card .card-header {
-        background: var(--color-surface) !important;
-        border-bottom-color: rgba(255,255,255,0.1);
-    }
-    
-    .dark .chart-card .card-title {
+    :root.dark .chart-card,
+    :root.dark .table-card {
+        background: var(--color-surface, #1E293B) !important;
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .chart-card .card-title i {
+    :root.dark .chart-card .card-header,
+    :root.dark .table-card .card-header {
+        background: var(--color-surface, #1E293B) !important;
+        border-bottom-color: rgba(226,232,240,0.15) !important;
+    }
+    
+    :root.dark .chart-card .card-title {
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .table-card .card-title {
+    :root.dark .chart-card .card-title i {
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .table-card .card-title i {
+    :root.dark .table-card .card-title {
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    .dark .table-card .table thead th {
-        border-bottom-color: rgba(255,255,255,0.1);
+    :root.dark .table-card .card-title i {
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    :root.dark .table-card .table {
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    :root.dark .table-card .table thead th {
+        border-bottom-color: rgba(226,232,240,0.15) !important;
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    :root.dark .table-card .table tbody td {
+        color: var(--color-text, #E2E8F0) !important;
+        border-color: rgba(226,232,240,0.1) !important;
+    }
+    
+    :root.dark .table-card .table tbody tr:hover {
+        background-color: rgba(226,232,240,0.08) !important;
+    }
+    
+    .table-card .table tbody tr:hover {
+        background-color: rgba(0,0,0,0.03) !important;
+    }
+    
+    :root.dark .table-card .table .text-muted {
+        color: rgba(226,232,240,0.7) !important;
+    }
+    
+    .table-card .table .text-muted {
+        color: rgba(15,23,42,0.6) !important;
+    }
+    
+    :root.dark .table-card .table .badge {
+        color: #fff !important;
+    }
+    
+    .table-card .table .badge {
+        color: #fff !important;
+    }
+    
+    /* Light mode - garantir contraste */
+    .chart-card,
+    .table-card {
+        background: #fff !important;
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    .chart-card .card-header,
+    .table-card .card-header {
+        background: #fff !important;
+        border-bottom-color: rgba(0,0,0,0.08) !important;
+    }
+    
+    .chart-card .card-title,
+    .table-card .card-title {
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    .table-card .table {
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    .table-card .table thead th {
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    .table-card .table tbody td {
+        color: var(--color-text, #0F172A) !important;
     }
 </style>
 {% endblock %}
@@ -390,7 +469,7 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
                                     <th>Título</th>
                                     <th>Autor</th>

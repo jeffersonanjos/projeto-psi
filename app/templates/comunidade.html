@@ -3,7 +3,429 @@
 {% block title %}{{ comunidade.name }} - MemóriaViva{% endblock %}
 
 {% block extra_css %}
-<!-- Page uses global community/post styles in app/static/style.css -->
+<style>
+/* Estilos culturais ricos para posts */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Kalam:wght@300;400;700&family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Paleta de cores vibrantes e terrosas */
+:root {
+    --cultural-red: #C41E3A;
+    --cultural-yellow: #F4A460;
+    --cultural-green: #228B22;
+    --cultural-orange: #FF8C00;
+    --cultural-brown: #8B4513;
+    --cultural-terracotta: #CD853F;
+}
+
+/* Container de posts com textura cultural */
+#postsContainer {
+    position: relative;
+    padding: 1rem 0;
+}
+
+/* Post card com design culturalmente rico */
+.post-card {
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(250, 246, 235, 0.98) 0%, 
+        rgba(243, 229, 207, 0.95) 100%) !important;
+    border: 3px solid var(--cultural-terracotta) !important;
+    border-radius: 20px !important;
+    box-shadow: 
+        0 8px 16px rgba(139, 69, 19, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 0 1px rgba(205, 133, 63, 0.3) !important;
+    padding: 1.5rem 1.75rem !important;
+    margin: 1.25rem auto !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.post-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--cultural-red) 0%, 
+        var(--cultural-yellow) 25%, 
+        var(--cultural-green) 50%, 
+        var(--cultural-orange) 75%, 
+        var(--cultural-red) 100%);
+    opacity: 0.8;
+}
+
+.post-card::after {
+    content: '✦';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    color: var(--cultural-terracotta);
+    opacity: 0.4;
+    font-family: 'Kalam', cursive;
+}
+
+.post-card:hover {
+    transform: translateY(-6px) scale(1.02) !important;
+    box-shadow: 
+        0 16px 32px rgba(139, 69, 19, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6),
+        0 0 0 2px rgba(205, 133, 63, 0.5) !important;
+    border-color: var(--cultural-orange) !important;
+}
+
+/* Dark mode para post cards */
+:root.dark .post-card {
+    background: linear-gradient(135deg, 
+        rgba(30, 26, 22, 0.95) 0%, 
+        rgba(42, 30, 18, 0.92) 100%) !important;
+    border-color: var(--cultural-terracotta) !important;
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(205, 133, 63, 0.4) !important;
+}
+
+:root.dark .post-card:hover {
+    box-shadow: 
+        0 16px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 0 0 2px rgba(205, 133, 63, 0.6) !important;
+}
+
+/* Conteúdo do post com tipografia artesanal */
+.post-content {
+    font-family: 'Kalam', cursive;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--color-text, #1E1A16) !important;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    border-left: 4px solid var(--cultural-green);
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+:root.dark .post-content {
+    background: rgba(0, 0, 0, 0.2);
+    border-left-color: var(--cultural-yellow);
+    color: var(--color-text, #E2E8F0) !important;
+}
+
+/* Meta do post */
+.post-meta {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: var(--cultural-brown) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.post-meta span {
+    color: var(--cultural-brown) !important;
+}
+
+:root.dark .post-meta {
+    color: var(--cultural-yellow) !important;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+:root.dark .post-meta span {
+    color: var(--cultural-yellow) !important;
+}
+
+.post-meta i {
+    color: var(--cultural-red);
+    font-size: 1.1rem;
+}
+
+:root.dark .post-meta i {
+    color: var(--cultural-yellow);
+}
+
+.post-meta strong {
+    color: var(--cultural-red);
+    font-weight: 600;
+}
+
+:root.dark .post-meta strong {
+    color: var(--cultural-yellow);
+}
+
+/* Botões de ação com animações culturais */
+.post-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--cultural-terracotta);
+}
+
+.post-actions .like-btn {
+    background: linear-gradient(135deg, var(--cultural-red), #E74C3C) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.post-actions .like-btn::before {
+    content: '❤️';
+    position: absolute;
+    left: -20px;
+    transition: left 0.3s ease;
+}
+
+.post-actions .like-btn:hover::before {
+    left: 10px;
+}
+
+.post-actions .like-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(196, 30, 58, 0.4);
+}
+
+.post-actions .like-btn.liked {
+    background: linear-gradient(135deg, var(--cultural-red), #C41E3A) !important;
+    animation: heartBeat 0.6s ease;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1.1); }
+    75% { transform: scale(1.15); }
+}
+
+.post-actions .comment-btn {
+    background: linear-gradient(135deg, var(--cultural-green), #32CD32) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(34, 139, 34, 0.3);
+}
+
+.post-actions .comment-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(34, 139, 34, 0.4);
+    background: linear-gradient(135deg, #32CD32, var(--cultural-green)) !important;
+}
+
+/* Input de comentário */
+.comment-input {
+    border: 2px solid var(--cultural-terracotta) !important;
+    border-radius: 20px !important;
+    padding: 0.6rem 1rem !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    color: var(--color-text) !important;
+    font-family: 'Kalam', cursive;
+    transition: all 0.3s ease;
+}
+
+:root.dark .comment-input {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: var(--cultural-yellow) !important;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: var(--cultural-green) !important;
+    box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.2) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+}
+
+:root.dark .comment-input:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: var(--cultural-yellow) !important;
+    box-shadow: 0 0 0 3px rgba(244, 164, 96, 0.2) !important;
+}
+
+/* Estatísticas do post */
+.post-stats {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: linear-gradient(135deg, 
+        rgba(244, 164, 96, 0.2), 
+        rgba(205, 133, 63, 0.15));
+    border-radius: 12px;
+    display: flex;
+    gap: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: var(--cultural-brown) !important;
+}
+
+.post-stats span {
+    color: var(--cultural-brown) !important;
+}
+
+:root.dark .post-stats {
+    background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.3), 
+        rgba(101, 50, 15, 0.25));
+    color: var(--cultural-yellow) !important;
+}
+
+:root.dark .post-stats span {
+    color: var(--cultural-yellow) !important;
+}
+
+.post-stats i {
+    color: var(--cultural-red);
+    font-size: 1.1rem;
+}
+
+:root.dark .post-stats i {
+    color: var(--cultural-yellow);
+}
+
+/* Garantir que ícones de stats não usem text-danger que pode conflitar */
+.post-stats .bi-heart-fill,
+.post-stats .bi-chat-dots {
+    color: var(--cultural-red) !important;
+}
+
+:root.dark .post-stats .bi-heart-fill,
+:root.dark .post-stats .bi-chat-dots {
+    color: var(--cultural-yellow) !important;
+}
+
+/* Seção de comentários */
+.comments-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(205, 133, 63, 0.3);
+}
+
+.comment-item {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-left: 3px solid var(--cultural-yellow);
+    transition: all 0.2s ease;
+}
+
+:root.dark .comment-item {
+    background: rgba(0, 0, 0, 0.3);
+    border-left-color: var(--cultural-orange);
+}
+
+.comment-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.comment-author {
+    font-weight: 700;
+    color: var(--cultural-red);
+    font-family: 'Poppins', sans-serif;
+}
+
+:root.dark .comment-author {
+    color: var(--cultural-yellow);
+}
+
+.comment-text {
+    font-family: 'Kalam', cursive;
+    color: var(--color-text);
+    margin-top: 0.5rem;
+    line-height: 1.6;
+}
+
+/* Header da comunidade */
+.community-header {
+    background: linear-gradient(135deg, 
+        rgba(196, 30, 58, 0.95) 0%, 
+        rgba(244, 164, 96, 0.9) 50%,
+        rgba(34, 139, 34, 0.95) 100%) !important;
+    border: 3px solid var(--cultural-terracotta) !important;
+    box-shadow: 0 8px 24px rgba(139, 69, 19, 0.3) !important;
+}
+
+.community-header h2 {
+    font-family: 'Fredoka One', cursive;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 2rem;
+}
+
+.community-header .description {
+    color: rgba(255, 255, 255, 0.95);
+    font-family: 'Kalam', cursive;
+    font-size: 1.1rem;
+}
+
+/* Botão criar post */
+.btn-create-post {
+    background: linear-gradient(135deg, var(--cultural-orange), var(--cultural-yellow)) !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4) !important;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-create-post:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.5) !important;
+    background: linear-gradient(135deg, var(--cultural-yellow), var(--cultural-orange)) !important;
+}
+
+/* Animações suaves */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .post-card {
+        padding: 1rem 1.25rem !important;
+        margin: 1rem auto !important;
+    }
+    
+    .post-content {
+        font-size: 1rem;
+    }
+    
+    .community-header h2 {
+        font-size: 1.5rem;
+    }
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -66,7 +488,7 @@
 
                 <div class="post-stats">
                     <span>
-                        <i class="bi bi-heart-fill text-danger me-1"></i>
+                        <i class="bi bi-heart-fill me-1"></i>
                         <span class="like-count" data-post-id="{{ msg.id }}">{{ msg.likes_count() }}</span> curtidas
                     </span>
                     <span>

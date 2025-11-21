@@ -2,7 +2,126 @@
 
 {% block title %}Login - MemóriaViva{% endblock %}
 
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+<style>
+    /* Login card com suporte completo a dark/light mode */
+    .card {
+        background: var(--color-surface, #ffffff) !important;
+        color: var(--color-text, #0F172A) !important;
+        border: 1px solid rgba(0,0,0,0.1) !important;
+    }
+    
+    :root.dark .card {
+        background: var(--color-surface, #1E293B) !important;
+        color: var(--color-text, #E2E8F0) !important;
+        border-color: rgba(226,232,240,0.15) !important;
+    }
+    
+    .card-header {
+        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)) !important;
+        color: #fff !important;
+    }
+    
+    .card-header h3 {
+        color: #fff !important;
+    }
+    
+    .card-header i {
+        color: #fff !important;
+    }
+    
+    .card-body {
+        background: var(--color-surface, #ffffff) !important;
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    :root.dark .card-body {
+        background: var(--color-surface, #1E293B) !important;
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    /* Labels do formulário */
+    .form-label {
+        color: var(--color-text, #0F172A) !important;
+        font-weight: 600;
+    }
+    
+    :root.dark .form-label {
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    /* Inputs */
+    .form-control {
+        background: var(--color-surface, #ffffff) !important;
+        color: var(--color-text, #0F172A) !important;
+        border: 1px solid rgba(0,0,0,0.12) !important;
+    }
+    
+    :root.dark .form-control {
+        background: var(--color-surface, #1E293B) !important;
+        color: var(--color-text, #E2E8F0) !important;
+        border-color: rgba(226,232,240,0.15) !important;
+    }
+    
+    .form-control:focus {
+        background: var(--color-surface, #ffffff) !important;
+        color: var(--color-text, #0F172A) !important;
+        border-color: var(--color-primary, #2563EB) !important;
+        box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25) !important;
+    }
+    
+    :root.dark .form-control:focus {
+        background: var(--color-surface, #1E293B) !important;
+        color: var(--color-text, #E2E8F0) !important;
+        border-color: var(--color-primary, #3B82F6) !important;
+        box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+    }
+    
+    .form-control::placeholder {
+        color: rgba(15, 23, 42, 0.6) !important;
+    }
+    
+    :root.dark .form-control::placeholder {
+        color: rgba(226, 232, 240, 0.6) !important;
+    }
+    
+    /* Botão */
+    .btn-primary {
+        background: var(--color-primary, #2563EB) !important;
+        border-color: var(--color-primary, #2563EB) !important;
+        color: #fff !important;
+    }
+    
+    .btn-primary:hover {
+        background: #1D4ED8 !important;
+        border-color: #1D4ED8 !important;
+        color: #fff !important;
+    }
+    
+    /* Link de cadastro */
+    .card-body small {
+        color: var(--color-text, #0F172A) !important;
+    }
+    
+    :root.dark .card-body small {
+        color: var(--color-text, #E2E8F0) !important;
+    }
+    
+    .card-body a {
+        color: var(--color-primary, #2563EB) !important;
+        font-weight: 600;
+    }
+    
+    :root.dark .card-body a {
+        color: var(--color-primary, #3B82F6) !important;
+    }
+    
+    .card-body a:hover {
+        color: var(--color-secondary, #60A5FA) !important;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="container py-5" data-aos="fade-up">

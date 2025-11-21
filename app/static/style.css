@@ -103,10 +103,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* layered background: warm overlay + cultural image */
-    background:
-      linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-      url('/static/img/background.jpg') center center / cover fixed no-repeat;
+    /* Background is handled by style-modern.css with proper dark/light mode switching */
+    background: var(--color-bg, #F9FAFB) !important;
     min-height: 100vh;
     color: var(--color-text);
     line-height: 1.6;
@@ -114,17 +112,8 @@ body {
     flex-direction: column;
 }
 
-/* Subtle vignette to improve text contrast over the background */
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.35) 70%);
-    z-index: -1;
-}
+/* Remove old background image approach - now handled by style-modern.css */
+/* The background images are managed by style-modern.css using ::before and ::after pseudo-elements */
 
 .container {
     position: relative;
@@ -411,32 +400,50 @@ h2 {
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     color: var(--color-text);
+}
 
-    /* Ensure input groups and search form buttons follow theme tokens so
-       the search form remains readable in dark mode */
-    .input-group .form-control {
-        background: var(--color-surface) !important;
-        color: var(--color-text) !important;
-        border: 1px solid var(--border-soft) !important;
-    }
+.form-control::placeholder {
+    color: var(--color-muted, rgba(30,26,22,0.6)) !important;
+    opacity: 1;
+}
 
-    .input-group .btn,
-    .input-group .btn-outline-secondary {
-        background: var(--color-surface) !important;
-        color: var(--color-text) !important;
-        border: 1px solid var(--border-soft) !important;
-    }
+/* Dark mode placeholder fix */
+:root.dark .form-control::placeholder {
+    color: rgba(226,232,240,0.72) !important;
+}
 
-    .input-group .btn:hover,
-    .input-group .btn-outline-secondary:hover {
-        background: var(--color-primary-600) !important;
-        color: #fff !important;
-    }
+/* Ensure input groups and search form buttons follow theme tokens so
+   the search form remains readable in dark mode */
+.input-group .form-control {
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
+    border: 1px solid var(--border-soft) !important;
+}
 
-    .form-control::placeholder {
-        color: var(--color-muted) !important;
-        opacity: 1;
-    }
+:root.dark .input-group .form-control {
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
+    border-color: rgba(226,232,240,0.12) !important;
+}
+
+.input-group .btn,
+.input-group .btn-outline-secondary {
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+:root.dark .input-group .btn,
+:root.dark .input-group .btn-outline-secondary {
+    background: var(--color-surface) !important;
+    color: var(--color-text) !important;
+    border-color: rgba(226,232,240,0.12) !important;
+}
+
+.input-group .btn:hover,
+.input-group .btn-outline-secondary:hover {
+    background: var(--color-primary-600) !important;
+    color: #fff !important;
 }
 
 .form-control:focus {
