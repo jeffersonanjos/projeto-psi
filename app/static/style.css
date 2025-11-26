@@ -212,7 +212,8 @@
     font-size: 1.2rem;
     color: currentColor;
     display: inline-flex;
-    opacity: 0.35;
+    align-items: center;
+    justify-content: center;
     transition: opacity 0.2s ease;
 }
 
@@ -228,11 +229,11 @@
 }
 
 ::root:not(.dark) #themeToggle [data-icon="moon"] {
-    opacity: 1;
+    display: inline-flex;
 }
 
 ::root:not(.dark) #themeToggle [data-icon="sun"] {
-    opacity: 0.45;
+    display: none;
 }
 
 ::root.dark #themeToggle {
@@ -243,11 +244,11 @@
 }
 
 ::root.dark #themeToggle [data-icon="sun"] {
-    opacity: 1;
+    display: inline-flex;
 }
 
 ::root.dark #themeToggle [data-icon="moon"] {
-    opacity: 0.45;
+    display: none;
 }
 
 #themeToggle:focus-visible {
@@ -1225,6 +1226,35 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
 
+.community-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.community-card__header > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.community-card__header .dropdown {
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+@media (max-width: 576px) {
+    .community-card__header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .community-card__header .dropdown {
+        align-self: flex-end;
+    }
+}
+
 .community-card .dropdown-menu {
     z-index: 2100;
 }
@@ -1354,6 +1384,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .community-grid .community-card {
     height: 100%;
+    min-height: 280px;
+    max-width: 100%;
+    margin: 0;
     display: flex;
     flex-direction: column;
 }

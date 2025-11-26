@@ -78,6 +78,8 @@ body::after {
   z-index: -3;
   pointer-events: none;
   transition: opacity 0.6s ease;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
 }
 
 body::before {
@@ -150,8 +152,8 @@ main::before {
 /* Theme toggle icons: show sun in light, moon in dark by default (prevents flicker)
    This ensures the icon matches the `:root.dark` class applied early in the document head. */
 #themeToggle [data-icon="moon"] { display: none; }
-#themeToggle [data-icon="sun"] { display: inline-block; }
-:root.dark #themeToggle [data-icon="moon"] { display: inline-block; }
+#themeToggle [data-icon="sun"] { display: inline-flex; }
+:root.dark #themeToggle [data-icon="moon"] { display: inline-flex; }
 :root.dark #themeToggle [data-icon="sun"] { display: none; }
 
 .navbar.navbar-fixed {

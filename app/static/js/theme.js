@@ -45,8 +45,8 @@
     const moon = toggle.querySelector('[data-icon="moon"]');
     const sun = toggle.querySelector('[data-icon="sun"]');
     if (!moon || !sun) return;
-    moon.toggleAttribute('hidden', isDark);
-    sun.toggleAttribute('hidden', !isDark);
+    moon.style.display = isDark ? 'inline-flex' : 'none';
+    sun.style.display = isDark ? 'none' : 'inline-flex';
   };
 
   const toggleTheme = () => {
