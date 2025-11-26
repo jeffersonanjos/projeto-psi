@@ -2,154 +2,37 @@
 
 {% block title %}Login - MemóriaViva{% endblock %}
 
-{% block extra_css %}
-<style>
-    /* Login card com suporte completo a dark/light mode */
-    .card {
-        background: var(--color-surface, #ffffff) !important;
-        color: var(--color-text, #0F172A) !important;
-        border: 1px solid rgba(0,0,0,0.1) !important;
-    }
-    
-    :root.dark .card {
-        background: var(--color-surface, #1E293B) !important;
-        color: var(--color-text, #E2E8F0) !important;
-        border-color: rgba(226,232,240,0.15) !important;
-    }
-    
-    .card-header {
-        background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)) !important;
-        color: #fff !important;
-    }
-    
-    .card-header h3 {
-        color: #fff !important;
-    }
-    
-    .card-header i {
-        color: #fff !important;
-    }
-    
-    .card-body {
-        background: var(--color-surface, #ffffff) !important;
-        color: var(--color-text, #0F172A) !important;
-    }
-    
-    :root.dark .card-body {
-        background: var(--color-surface, #1E293B) !important;
-        color: var(--color-text, #E2E8F0) !important;
-    }
-    
-    /* Labels do formulário */
-    .form-label {
-        color: var(--color-text, #0F172A) !important;
-        font-weight: 600;
-    }
-    
-    :root.dark .form-label {
-        color: var(--color-text, #E2E8F0) !important;
-    }
-    
-    /* Inputs */
-    .form-control {
-        background: var(--color-surface, #ffffff) !important;
-        color: var(--color-text, #0F172A) !important;
-        border: 1px solid rgba(0,0,0,0.12) !important;
-    }
-    
-    :root.dark .form-control {
-        background: var(--color-surface, #1E293B) !important;
-        color: var(--color-text, #E2E8F0) !important;
-        border-color: rgba(226,232,240,0.15) !important;
-    }
-    
-    .form-control:focus {
-        background: var(--color-surface, #ffffff) !important;
-        color: var(--color-text, #0F172A) !important;
-        border-color: var(--color-primary, #2563EB) !important;
-        box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25) !important;
-    }
-    
-    :root.dark .form-control:focus {
-        background: var(--color-surface, #1E293B) !important;
-        color: var(--color-text, #E2E8F0) !important;
-        border-color: var(--color-primary, #3B82F6) !important;
-        box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
-    }
-    
-    .form-control::placeholder {
-        color: rgba(15, 23, 42, 0.6) !important;
-    }
-    
-    :root.dark .form-control::placeholder {
-        color: rgba(226, 232, 240, 0.6) !important;
-    }
-    
-    /* Botão */
-    .btn-primary {
-        background: var(--color-primary, #2563EB) !important;
-        border-color: var(--color-primary, #2563EB) !important;
-        color: #fff !important;
-    }
-    
-    .btn-primary:hover {
-        background: #1D4ED8 !important;
-        border-color: #1D4ED8 !important;
-        color: #fff !important;
-    }
-    
-    /* Link de cadastro */
-    .card-body small {
-        color: var(--color-text, #0F172A) !important;
-    }
-    
-    :root.dark .card-body small {
-        color: var(--color-text, #E2E8F0) !important;
-    }
-    
-    .card-body a {
-        color: var(--color-primary, #2563EB) !important;
-        font-weight: 600;
-    }
-    
-    :root.dark .card-body a {
-        color: var(--color-primary, #3B82F6) !important;
-    }
-    
-    .card-body a:hover {
-        color: var(--color-secondary, #60A5FA) !important;
-        text-decoration: underline;
-    }
-</style>
-{% endblock %}
+{% block extra_css %}{% endblock %}
 
 {% block content %}
-<section class="container py-5" data-aos="fade-up">
-  <div class="row justify-content-center">
-    <div class="col-sm-10 col-md-8 col-lg-5">
-      <div class="card hover-raise">
-        <div class="card-header text-center">
-          <div class="d-flex align-items-center justify-content-center gap-2">
+<section class="auth-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-5">
+        <div class="auth-card" data-aos="fade-up">
+          <div class="auth-title">
             <i class="bi bi-shield-lock-fill"></i>
-            <h3 class="mb-0" style="color: white;">Login</h3>
+            <span>Entrar</span>
           </div>
-        </div>
-        <div class="card-body p-4">
           <form method="post" class="needs-validation" novalidate>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" name="email" required>
+              <input type="email" class="form-control auth-input" id="email" name="email" required>
             </div>
             <div class="mb-3">
               <label for="senha" class="form-label">Senha</label>
-              <input type="password" class="form-control" id="senha" name="senha" required>
+              <input type="password" class="form-control auth-input" id="senha" name="senha" required>
             </div>
-            <div class="d-grid gap-2 mt-4">
-              <button type="submit" class="btn btn-primary">Entrar</button>
-            </div>
+            <button type="submit" class="btn auth-btn mt-3">
+              <i class="bi bi-box-arrow-in-right"></i>
+              Entrar
+            </button>
           </form>
-          <div class="text-center mt-3">
-            <small>Não tem uma conta? <a href="{{ url_for('auth.register') }}">Cadastre-se</a></small>
+          <div class="text-center mt-4">
+            <small class="auth-helper">
+              Não tem uma conta?
+              <a href="{{ url_for('auth.register') }}">Cadastre-se</a>
+            </small>
           </div>
         </div>
       </div>
