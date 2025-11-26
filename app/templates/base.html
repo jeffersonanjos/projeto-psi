@@ -58,7 +58,7 @@
             </li>
             {% if current_user.is_authenticated %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" data-no-loader="true">
                 {{ current_user.nome }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end">

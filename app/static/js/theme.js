@@ -61,8 +61,29 @@
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a');
       if (!a || a.href === undefined) return;
-      const url = new URL(a.href, window.location.href);
-      if (url.origin === window.location.origin && !a.hasAttribute('data-no-loader') && a.target !== '_blank') {
+      const href = (a.getAttribute('href') ?? '').trim();
+      if (!href || href === '#' || href.toLowerCase().startsWith('javascript:')) return;
+      if (a.dataset.bsToggle || a.dataset.bsTarget) return;
+
+      let url;
+      try {
+        url = new URL(a.href, window.location.href);
+      } catch (_) {
+        return;
+      }
+
+      if (!['http:', 'https:'].includes(url.protocol)) return;
+
+      const isSamePageHash = url.origin === window.location.origin &&
+        url.pathname === window.location.pathname &&
+        Boolean(url.hash) &&
+        !url.search;
+
+      if (isSamePageHash) return;
+
+      if (url.origin === window.location.origin &&
+        !a.hasAttribute('data-no-loader') &&
+        a.target !== '_blank') {
         showLoader();
       }
     }, true);
