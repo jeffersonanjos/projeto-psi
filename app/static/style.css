@@ -135,7 +135,14 @@
 .auth-title i {
     margin: 0;
     color: var(--color-primary-600);
-    font-size: 1.3rem;
+    font-size: 1.8rem;
+    opacity: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+:root.dark .auth-title i {
+    color: var(--color-primary-500);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .auth-input {
@@ -178,6 +185,52 @@
 
 .auth-helper {
     color: var(--color-text);
+}
+
+/* Password input wrapper with toggle button */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .auth-input {
+    padding-right: 3rem;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+    font-size: 1.1rem;
+}
+
+.password-toggle-btn:hover {
+    color: var(--color-primary-600);
+    transform: scale(1.1);
+}
+
+.password-toggle-btn:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+:root.dark .password-toggle-btn {
+    color: rgba(226, 232, 240, 0.7);
+}
+
+:root.dark .password-toggle-btn:hover {
+    color: var(--color-primary-400);
 }
 
 @media (max-width: 576px) {
