@@ -21,11 +21,15 @@
         margin-bottom: 2.5rem;
     }
     
-    .dashboard-header h1 {
+    /* 
+       Importante: não sobrescrever títulos que usam a classe utilitária
+       .force-white-title — assim eles permanecem brancos em qualquer tema.
+    */
+    .dashboard-header h1:not(.force-white-title) {
         color: var(--color-text, #0F172A) !important;
     }
     
-    .dashboard-header h1 i {
+    .dashboard-header h1:not(.force-white-title) i {
         color: var(--color-text, #0F172A) !important;
     }
     
@@ -33,11 +37,11 @@
         color: rgba(15, 23, 42, 0.7) !important;
     }
     
-    :root.dark .dashboard-header h1 {
+    :root.dark .dashboard-header h1:not(.force-white-title) {
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    :root.dark .dashboard-header h1 i {
+    :root.dark .dashboard-header h1:not(.force-white-title) i {
         color: var(--color-text, #E2E8F0) !important;
     }
     
@@ -45,13 +49,13 @@
         color: rgba(226, 232, 240, 0.8) !important;
     }
     
-    /* Override force-white classes in dark mode for dashboard */
+    /* Override force-white classes in dark mode for dashboard (mantém branco) */
     :root.dark .dashboard-header .force-white-title {
-        color: var(--color-text, #E2E8F0) !important;
+        color: #ffffff !important;
     }
     
     :root.dark .dashboard-header .force-white-subtitle {
-        color: rgba(226, 232, 240, 0.8) !important;
+        color: rgba(255, 255, 255, 0.92) !important;
     }
     
     /* Stat Cards */
@@ -287,9 +291,11 @@
         color: var(--color-text, #E2E8F0) !important;
     }
     
-    :root.dark .table-card .table tbody td {
+    :root.dark .table-card .table tbody td,
+    :root.dark .table-card .table tbody th {
         color: var(--color-text, #E2E8F0) !important;
         border-color: rgba(226,232,240,0.1) !important;
+        background-color: transparent !important;
     }
     
     :root.dark .table-card .table tbody tr:hover {
@@ -353,7 +359,7 @@
     <div class="dashboard-header">
         <h1 class="display-5 fw-bold mb-2 force-white-title">
             <i class="bi bi-speedometer2 me-2"></i>Dashboard
-        </h1>
+        </h1>   
         <p class="text-muted force-white-subtitle">Visão geral do sistema MemóriaViva</p>
     </div>
 

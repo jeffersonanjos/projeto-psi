@@ -35,21 +35,61 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+          <!-- Navegação principal (esquerda) -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Início</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('content.list_content') }}">Conteúdos</a></li>
             {% if current_user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+
+            <!-- Dropdown Comunidades -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navComunidades" role="button" data-bs-toggle="dropdown">
+                Comunidades
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navComunidades">
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('comunidade.minhas_comunidades') }}">
+                    Minhas comunidades
+                  </a>
+                </li>
+                {% if current_user.is_admin %}
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('comunidade.comunidade') }}">
+                    Gerenciar comunidades
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </li>
+
+            <!-- Dropdown Posts -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navPosts" role="button" data-bs-toggle="dropdown">
+                Posts
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navPosts">
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('posts.meus_posts') }}">
+                    Meus posts
+                  </a>
+                </li>
+                {% if current_user.is_admin %}
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('posts.list_posts') }}">
+                    Gerenciar posts
+                  </a>
+                </li>
+                {% endif %}
+              </ul>
+            </li>
             {% endif %}
-            {% if current_user.is_authenticated and current_user.is_admin %}
-         
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('comunidade.comunidade') }}">Comunidades</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('posts.list_posts') }}">Posts</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('users.list_users') }}">Usuários</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('feedback.enviar_feedback') }}">Feedback</a></li>
           </ul>
-            {% endif %}
-          <ul class="navbar-nav align-items-center gap-2">
+
+          <!-- Ações à direita: tema + usuário/login -->
+          <ul class="navbar-nav align-items-center gap-2 ms-lg-2">
             <li class="nav-item">
               <button id="themeToggle" class="theme-toggle-btn" type="button" aria-label="Alternar tema">
                 <i class="bi bi-moon-fill" data-icon="moon" aria-hidden="true"></i>

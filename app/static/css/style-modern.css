@@ -70,25 +70,37 @@ body::before,
 body::after {
   content: "";
   position: fixed;
-  inset: 0;
+  /* 
+    Usamos um "bleed" além da viewport para que o blur
+    não revele bordas claras nas extremidades da tela.
+  */
+  top: -64px;
+  left: -64px;
+  right: -64px;
+  bottom: -64px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  /* Cor base escura para preencher áreas transparentes do PNG
+     e evitar halo esbranquiçado quando o blur é aplicado. */
+  background-color: #020617;
   z-index: -3;
   pointer-events: none;
   transition: opacity 0.6s ease;
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
+  filter: blur(14px);
+  -webkit-filter: blur(14px);
 }
 
 body::before {
-  background-image: url('/static/img/background.png');
+  /* Light-mode: usa o fundo claro (background2) */
+  background-image: url('/static/img/background2.png');
   opacity: 1;
 }
 
 body::after {
-  background-image: url('/static/img/background2.png');
+  /* Dark-mode: usa o fundo noturno (background) */
+  background-image: url('/static/img/background.png');
   opacity: 0;
 }
 
@@ -375,10 +387,183 @@ main::before {
   box-shadow: var(--shadow-md);
 }
 
+/* === Layout moderno e reutilizável === */
+
+/* Casca de página padrão usada em quase todas as telas */
+.page-shell {
+  max-width: 1200px;
+  margin: 1.5rem auto 2.5rem auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 992px) {
+  .page-shell {
+    margin-top: 2.5rem;
+  }
+}
+
+/* Cabeçalho de página (título + subtítulo + ações) */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin-bottom: 1.75rem;
+}
+
+.page-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.page-header-title {
+  font-size: clamp(1.6rem, 2.1vw + 1.1rem, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.page-header-subtitle {
+  font-size: .95rem;
+  color: var(--color-muted);
+}
+
+.page-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+@media (min-width: 768px) {
+  .page-header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .page-header-main {
+    max-width: 70%;
+  }
+}
+
+/* Grids de cards reutilizáveis */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 576px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Grid específica para até 4 atalhos em linha (home) */
+.card-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Variantes de card consistentes */
+.card-elevated {
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-hero {
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.06), transparent 55%),
+              linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff;
+  box-shadow: var(--shadow-md);
+}
+
+.card-hero h1,
+.card-hero h2,
+.card-hero h3 {
+  color: #fff;
+}
+
+/* Home: ajustes finos */
+.home-quick-actions .card-body {
+  padding-bottom: 1rem;
+}
+
 /* AOS */
 @media (prefers-reduced-motion: reduce) {
   [data-aos] {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* === Ajustes de modais / feedback === */
+
+/* Backdrop um pouco mais suave para não “matar” o fundo blur */
+.modal-backdrop.show {
+  opacity: 0.55;
+}
+
+/* Garante contraste em ambos os temas */
+.modal-content {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-soft);
+}
+
+/* Feedback modal: garantir contraste em dark-mode */
+:root.dark #feedbackModal .form-control {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: rgba(226, 232, 240, 0.2);
+}
+
+:root.dark #feedbackModal .form-control::placeholder {
+  color: var(--color-muted);
+}
+
+:root.dark #feedbackModal .modal-header,
+:root.dark #feedbackModal .modal-footer {
+  border-color: rgba(148, 163, 184, 0.35);
 }
