@@ -115,8 +115,18 @@
                             <div class="card-body">
                                 <h5 class="card-title mb-3">Ações Rápidas</h5>
                                 <div class="d-grid gap-2">
-                                    <a href="{{ url_for('posts.create_post') }}" class="btn btn-success">Criar Post</a>
-                                    <a href="{{ url_for('content.create_content') }}" class="btn btn-info">Adicionar Obra</a>
+                                    <button type="button"
+                                            class="btn btn-success"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#createPostModal">
+                                        Criar Post
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-info"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#createContentModal">
+                                        Adicionar Obra
+                                    </button>
                                     <button type="button" class="btn btn-warning force-white-title" data-bs-toggle="modal" data-bs-target="#feedbackModal">
                                         <i class="fas fa-comment-dots me-1"></i> Enviar Feedback
                                     </button>
@@ -182,10 +192,117 @@
                 </section>
             {% endif %}
 </div>
+{% endblock %}
 
-<!-- Modal de Feedback -->
+{% block extra_css %}{% endblock %}
+
+{% block global_modals %}
+{{ super() }}
+<!-- Modal Criar Post (global, fora do appRoot, não sofre blur) -->
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPostModalLabel">Criar Novo Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form method="POST" action="{{ url_for('posts.create_post') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="modal_community_id" class="form-label">Comunidade</label>
+                        <select class="form-select" id="modal_community_id" name="community_id" required>
+                            <option value="">Selecione a comunidade</option>
+                            {% for c in communities or [] %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal_conteudo" class="form-label">Conteúdo</label>
+                        <textarea class="form-control"
+                                  id="modal_conteudo"
+                                  name="conteudo"
+                                  rows="5"
+                                  placeholder="Escreva seu post aqui..."
+                                  required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Publicar Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adicionar Obra (global) -->
+<div class="modal fade" id="createContentModal" tabindex="-1" aria-labelledby="createContentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createContentModalLabel">Adicionar Novo Conteúdo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <form method="POST" action="{{ url_for('content.create_content') }}" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="modal_title" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="modal_title" name="title" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="modal_type" class="form-label">Tipo de Conteúdo</label>
+                            <select class="form-select" id="modal_type" name="type" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="artigo">Artigo</option>
+                                <option value="relato">Relato</option>
+                                <option value="entrevista">Entrevista</option>
+                                <option value="foto">Foto</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal_description" class="form-label">Breve Descrição</label>
+                        <textarea class="form-control" id="modal_description" name="description" rows="3" placeholder="Descreva o conteúdo..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal_url" class="form-label">Link relacionado (YouTube ou página externa)</label>
+                        <input type="url" class="form-control" id="modal_url" name="url" placeholder="https://youtube.com/watch?v=...">
+                        <small class="text-muted">Link relacionado ao conteúdo, como vídeo de entrevista ou referência externa.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modal_file" class="form-label">Arquivo (PDF, EPUB ou imagem) - opcional se houver link</label>
+                        <input type="file"
+                               class="form-control"
+                               id="modal_file"
+                               name="file"
+                               accept=".pdf,.epub,.jpg,.jpeg,.png,.webp">
+                        <small class="text-muted">Formatos aceitos: PDF, EPUB, JPG, JPEG, PNG, WEBP. Arquivo ou link é obrigatório.</small>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="modal_thumbnail" class="form-label">URL da Capa (opcional)</label>
+                            <input type="url" class="form-control" id="modal_thumbnail" name="thumbnail" placeholder="https://...">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="modal_release_date" class="form-label">Data de Publicação (opcional)</label>
+                            <input type="date" class="form-control" id="modal_release_date" name="release_date">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar Conteúdo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Feedback (global, fora do appRoot, não sofre blur) -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="feedbackModalLabel">Enviar Feedback</h5>
@@ -224,5 +341,3 @@
     </div>
 </div>
 {% endblock %}
-
-{% block extra_css %}{% endblock %}

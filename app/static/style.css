@@ -324,10 +324,8 @@ main {
 }
 
 .navbar {
-    background: rgba(0, 0, 0, 0.9) !important;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 2px 20px rgba(var(--shadow-rgb), 0.3);
     position: sticky;
     top: 0;
@@ -337,7 +335,6 @@ main {
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
-    color: #fff !important;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -347,7 +344,6 @@ main {
 }
 
 .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
     font-weight: 500;
     transition: all 0.3s ease;
     position: relative;
@@ -760,10 +756,6 @@ h2 {
 }
 
 footer {
-    background: rgba(0, 0, 0, 0.9) !important;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
     margin-top: auto;
     flex-shrink: 0;
     padding: 1rem 0 !important;
@@ -1449,4 +1441,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .community-card__footer {
     margin-top: auto;
+}
+
+/* Override: botão de tema mais visível no light-mode sobre header claro */
+:root:not(.dark) body #themeToggle {
+    background: #000000;
+    border-color: rgba(0, 0, 0, 0.75);
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
